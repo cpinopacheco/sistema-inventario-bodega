@@ -1,105 +1,125 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaBoxes, FaFilter, FaSortAmountDown, FaSortAmountUp } from "react-icons/fa"
-import { useProducts, type Product } from "../context/ProductContext"
-import { useWithdrawal } from "../context/WithdrawalContext"
-import ProductForm from "../components/products/ProductForm"
-import { Tooltip } from "../components/ui/Tooltip"
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  FaPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaBoxes,
+  FaFilter,
+  FaSortAmountDown,
+  FaSortAmountUp,
+} from "react-icons/fa";
+import { useProducts, type Product } from "../context/ProductContext";
+import { useWithdrawal } from "../context/WithdrawalContext";
+import ProductForm from "../components/products/ProductForm";
+import { Tooltip } from "../components/ui/Tooltip";
 
 const Products = () => {
-  const { products, categories, deleteProduct } = useProducts()
-  const { addToCart } = useWithdrawal()
+  const { products, categories, deleteProduct } = useProducts();
+  const { addToCart } = useWithdrawal();
 
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [showProductForm, setShowProductForm] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [sortField, setSortField] = useState<"name" | "stock" | "category">("name")
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
-  const [quantityInputs, setQuantityInputs] = useState<Record<number, number>>({})
-  const [confirmDelete, setConfirmDelete] = useState<number | null>(null)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [showProductForm, setShowProductForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [sortField, setSortField] = useState<"name" | "stock" | "category">(
+    "name"
+  );
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [quantityInputs, setQuantityInputs] = useState<Record<number, number>>(
+    {}
+  );
+  const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
 
   // Inicializar cantidades
   useEffect(() => {
-    const initialQuantities: Record<number, number> = {}
+    const initialQuantities: Record<number, number> = {};
     products.forEach((product) => {
-      initialQuantities[product.id] = 1
-    })
-    setQuantityInputs(initialQuantities)
-  }, [products])
+      initialQuantities[product.id] = 1;
+    });
+    setQuantityInputs(initialQuantities);
+  }, [products]);
 
   // Función para cambiar cantidad
   const handleQuantityChange = (id: number, value: number) => {
-    if (value < 1) value = 1
+    if (value < 1) value = 1;
     setQuantityInputs((prev) => ({
       ...prev,
       [id]: value,
-    }))
-  }
+    }));
+  };
 
   // Función para abrir modal de edición
   const handleEdit = (product: Product) => {
-    setSelectedProduct(product)
-    setShowProductForm(true)
-  }
+    setSelectedProduct(product);
+    setShowProductForm(true);
+  };
 
   // Función para confirmar eliminación
   const handleDeleteConfirm = (id: number) => {
-    setConfirmDelete(id)
-  }
+    setConfirmDelete(id);
+  };
 
   // Función para eliminar producto
   const handleDelete = (id: number) => {
-    deleteProduct(id)
-    setConfirmDelete(null)
-  }
+    deleteProduct(id);
+    setConfirmDelete(null);
+  };
 
   // Función para agregar al carrito
   const handleAddToCart = (product: Product, quantity: number) => {
-    addToCart(product, quantity)
-  }
+    addToCart(product, quantity);
+  };
 
   // Función para cambiar el ordenamiento
   const handleSort = (field: "name" | "stock" | "category") => {
     if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
-      setSortField(field)
-      setSortDirection("asc")
+      setSortField(field);
+      setSortDirection("asc");
     }
-  }
+  };
 
   // Filtrar y ordenar productos
   const filteredProducts = products
     .filter((product) => {
       const matchesSearch =
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesCategory = selectedCategory === "all" || product.category === selectedCategory
+        product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "all" || product.category === selectedCategory;
 
-      return matchesSearch && matchesCategory
+      return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
       if (sortField === "name") {
-        return sortDirection === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+        return sortDirection === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
       } else if (sortField === "stock") {
-        return sortDirection === "asc" ? a.stock - b.stock : b.stock - a.stock
+        return sortDirection === "asc" ? a.stock - b.stock : b.stock - a.stock;
       } else if (sortField === "category") {
-        return sortDirection === "asc" ? a.category.localeCompare(b.category) : b.category.localeCompare(a.category)
+        return sortDirection === "asc"
+          ? a.category.localeCompare(b.category)
+          : b.category.localeCompare(a.category);
       }
-      return 0
-    })
+      return 0;
+    });
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap justify-between items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-800">Gestión de Productos</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Gestión de Productos
+        </h1>
         <button
           onClick={() => {
-            setSelectedProduct(null)
-            setShowProductForm(true)
+            setSelectedProduct(null);
+            setShowProductForm(true);
           }}
           className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
@@ -146,7 +166,10 @@ const Products = () => {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    <button onClick={() => handleSort("name")} className="flex items-center focus:outline-none">
+                    <button
+                      onClick={() => handleSort("name")}
+                      className="flex items-center focus:outline-none"
+                    >
                       Producto
                       {sortField === "name" &&
                         (sortDirection === "asc" ? (
@@ -157,7 +180,10 @@ const Products = () => {
                     </button>
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    <button onClick={() => handleSort("category")} className="flex items-center focus:outline-none">
+                    <button
+                      onClick={() => handleSort("category")}
+                      className="flex items-center focus:outline-none"
+                    >
                       Categoría
                       {sortField === "category" &&
                         (sortDirection === "asc" ? (
@@ -168,7 +194,10 @@ const Products = () => {
                     </button>
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    <button onClick={() => handleSort("stock")} className="flex items-center focus:outline-none">
+                    <button
+                      onClick={() => handleSort("stock")}
+                      className="flex items-center focus:outline-none"
+                    >
                       Stock
                       {sortField === "stock" &&
                         (sortDirection === "asc" ? (
@@ -193,7 +222,9 @@ const Products = () => {
                 {filteredProducts.map((product) => (
                   <tr
                     key={product.id}
-                    className={`hover:bg-gray-50 ${product.stock <= product.minStock ? "bg-red-50" : ""}`}
+                    className={`hover:bg-gray-50 ${
+                      product.stock <= product.minStock ? "bg-red-50" : ""
+                    }`}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -209,8 +240,12 @@ const Products = () => {
                           )}
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                          <div className="text-sm text-gray-500 max-w-xs truncate">{product.description}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.name}
+                          </div>
+                          <div className="text-sm text-gray-500 max-w-xs truncate">
+                            {product.description}
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -225,13 +260,15 @@ const Products = () => {
                           product.stock <= product.minStock
                             ? "text-red-600"
                             : product.stock <= product.minStock * 2
-                              ? "text-yellow-600"
-                              : "text-green-600"
+                            ? "text-yellow-600"
+                            : "text-green-600"
                         }`}
                       >
                         {product.stock} unidades
                       </div>
-                      {product.stock <= product.minStock && <div className="text-xs text-red-600">Stock bajo</div>}
+                      {product.stock <= product.minStock && (
+                        <div className="text-xs text-red-600">Stock bajo</div>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {product.location || "No especificada"}
@@ -240,13 +277,19 @@ const Products = () => {
                       ${product.price.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end space-x-2">
+                      <div className="flex items-center justify-end gap-6">
                         <div className="flex items-center">
                           <button
                             onClick={() =>
-                              handleQuantityChange(product.id, Math.max(1, (quantityInputs[product.id] || 1) - 1))
+                              handleQuantityChange(
+                                product.id,
+                                Math.max(
+                                  1,
+                                  (quantityInputs[product.id] || 1) - 1
+                                )
+                              )
                             }
-                            className="px-2 py-1 bg-gray-200 rounded-l-md hover:bg-gray-300"
+                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-l-md hover:bg-gray-300"
                             aria-label="Disminuir cantidad"
                           >
                             -
@@ -255,42 +298,63 @@ const Products = () => {
                             type="number"
                             min="1"
                             value={quantityInputs[product.id] || 1}
-                            onChange={(e) => handleQuantityChange(product.id, Number.parseInt(e.target.value) || 1)}
-                            className="w-12 py-1 text-center border-t border-b border-gray-300"
+                            onChange={(e) =>
+                              handleQuantityChange(
+                                product.id,
+                                Number.parseInt(e.target.value) || 1
+                              )
+                            }
+                            className="w-16 h-8 text-center border-t border-b border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            style={{ textAlign: "center" }}
                           />
                           <button
-                            onClick={() => handleQuantityChange(product.id, (quantityInputs[product.id] || 1) + 1)}
-                            className="px-2 py-1 bg-gray-200 rounded-r-md hover:bg-gray-300"
+                            onClick={() =>
+                              handleQuantityChange(
+                                product.id,
+                                (quantityInputs[product.id] || 1) + 1
+                              )
+                            }
+                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-r-md hover:bg-gray-300"
                             aria-label="Aumentar cantidad"
                           >
                             +
                           </button>
                         </div>
 
-                        <Tooltip content="Añadir al retiro">
-                          <button
-                            onClick={() => handleAddToCart(product, quantityInputs[product.id] || 1)}
-                            className="text-blue-600 hover:text-blue-900"
-                            disabled={product.stock <= 0}
-                          >
-                            <FaPlus size={16} />
-                          </button>
-                        </Tooltip>
+                        <div className="flex items-center space-x-4">
+                          <Tooltip content="Añadir al retiro" position="top">
+                            <button
+                              onClick={() =>
+                                handleAddToCart(
+                                  product,
+                                  quantityInputs[product.id] || 1
+                                )
+                              }
+                              className="text-blue-600 hover:text-blue-900 p-1"
+                              disabled={product.stock <= 0}
+                            >
+                              <FaPlus size={18} />
+                            </button>
+                          </Tooltip>
 
-                        <Tooltip content="Editar">
-                          <button onClick={() => handleEdit(product)} className="text-indigo-600 hover:text-indigo-900">
-                            <FaEdit size={16} />
-                          </button>
-                        </Tooltip>
+                          <Tooltip content="Editar" position="top">
+                            <button
+                              onClick={() => handleEdit(product)}
+                              className="text-indigo-600 hover:text-indigo-900 p-1"
+                            >
+                              <FaEdit size={18} />
+                            </button>
+                          </Tooltip>
 
-                        <Tooltip content="Eliminar">
-                          <button
-                            onClick={() => handleDeleteConfirm(product.id)}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            <FaTrash size={16} />
-                          </button>
-                        </Tooltip>
+                          <Tooltip content="Eliminar" position="top">
+                            <button
+                              onClick={() => handleDeleteConfirm(product.id)}
+                              className="text-red-600 hover:text-red-900 p-1"
+                            >
+                              <FaTrash size={18} />
+                            </button>
+                          </Tooltip>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -302,7 +366,9 @@ const Products = () => {
       ) : (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <FaBoxes className="mx-auto text-gray-400 text-5xl mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-1">No se encontraron productos</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-1">
+            No se encontraron productos
+          </h3>
           <p className="text-gray-500">
             {searchTerm || selectedCategory !== "all"
               ? "Intenta ajustar los filtros de búsqueda"
@@ -316,8 +382,8 @@ const Products = () => {
           <ProductForm
             product={selectedProduct || undefined}
             onClose={() => {
-              setShowProductForm(false)
-              setSelectedProduct(null)
+              setShowProductForm(false);
+              setSelectedProduct(null);
             }}
             isVisible={showProductForm}
           />
@@ -338,9 +404,12 @@ const Products = () => {
               exit={{ scale: 0.9, opacity: 0 }}
               className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
             >
-              <h3 className="text-lg font-medium text-gray-900 mb-3">Confirmar eliminación</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">
+                Confirmar eliminación
+              </h3>
               <p className="text-gray-500 mb-6">
-                ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
+                ¿Estás seguro de que deseas eliminar este producto? Esta acción
+                no se puede deshacer.
               </p>
               <div className="flex justify-end space-x-3">
                 <button
@@ -361,7 +430,7 @@ const Products = () => {
         )}
       </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default Products
+export default Products;

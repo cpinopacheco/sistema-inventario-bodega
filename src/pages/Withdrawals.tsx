@@ -153,7 +153,7 @@ const Withdrawals = () => {
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center">
+                              <div className="flex items-center justify-center">
                                 <button
                                   onClick={() =>
                                     handleQuantityChange(
@@ -161,7 +161,7 @@ const Withdrawals = () => {
                                       Math.max(1, item.quantity - 1)
                                     )
                                   }
-                                  className="px-2 py-1 bg-gray-200 rounded-l-md hover:bg-gray-300"
+                                  className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-l-md hover:bg-gray-300"
                                   aria-label="Disminuir cantidad"
                                 >
                                   -
@@ -176,7 +176,8 @@ const Withdrawals = () => {
                                       Number.parseInt(e.target.value) || 1
                                     )
                                   }
-                                  className="w-12 py-1 text-center border-t border-b border-gray-300"
+                                  className="w-16 h-8 text-center border-t border-b border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                  style={{ textAlign: "center" }}
                                 />
                                 <button
                                   onClick={() =>
@@ -185,7 +186,7 @@ const Withdrawals = () => {
                                       item.quantity + 1
                                     )
                                   }
-                                  className="px-2 py-1 bg-gray-200 rounded-r-md hover:bg-gray-300"
+                                  className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-r-md hover:bg-gray-300"
                                   aria-label="Aumentar cantidad"
                                 >
                                   +
@@ -193,12 +194,15 @@ const Withdrawals = () => {
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <Tooltip content="Eliminar del carrito">
+                              <Tooltip
+                                content="Eliminar del carrito"
+                                position="top"
+                              >
                                 <button
                                   onClick={() => removeFromCart(item.productId)}
-                                  className="text-red-600 hover:text-red-900"
+                                  className="text-red-600 hover:text-red-900 p-1"
                                 >
-                                  <FaTrash size={16} />
+                                  <FaTrash size={18} />
                                 </button>
                               </Tooltip>
                             </td>
@@ -279,11 +283,11 @@ const Withdrawals = () => {
                         <h3 className="text-lg font-medium text-gray-900">
                           Retiro #{withdrawal.id} - {withdrawal.userName}
                         </h3>
-                        <div className="flex space-x-2">
-                          <Tooltip content="Exportar a Excel">
+                        <div className="flex space-x-4">
+                          <Tooltip content="Exportar a Excel" position="top">
                             <button
                               onClick={() => handleExportToExcel(withdrawal.id)}
-                              className="text-green-600 hover:text-green-900"
+                              className="text-green-600 hover:text-green-900 p-1"
                             >
                               <FaFileExcel size={18} />
                             </button>
@@ -296,7 +300,7 @@ const Withdrawals = () => {
                                   : withdrawal.id
                               )
                             }
-                            className="text-blue-600 hover:text-blue-900"
+                            className="text-blue-600 hover:text-blue-900 p-1"
                           >
                             {selectedWithdrawal === withdrawal.id ? (
                               <FaTimes size={18} />
