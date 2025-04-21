@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { Outlet } from "react-router-dom"
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import Navbar from "./Navbar"
-import Sidebar from "./Sidebar"
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 const Layout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen)
-  }
+    setSidebarOpen(!sidebarOpen);
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -47,7 +47,7 @@ const Layout = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
