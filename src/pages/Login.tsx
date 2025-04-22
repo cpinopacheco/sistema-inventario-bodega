@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FaLock, FaWarehouse } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
@@ -45,17 +45,21 @@ const Login = () => {
         <div className="text-center mb-8">
           <motion.div
             initial={{ scale: 0 }}
-            animate={{ scale: 1, rotate: 360 }}
+            animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-primary text-neutral-white rounded-full mb-4"
+            className="mb-4 flex justify-center"
           >
-            <FaWarehouse size={24} />
+            <img
+              src="/cenpecar-logo.png"
+              alt="CENPECAR Logo"
+              className="h-24 w-auto mx-auto"
+            />
           </motion.div>
           <h2 className="text-2xl font-bold text-primary">
             Sistema de Inventario
           </h2>
           <p className="text-neutral-medium mt-1">
-            Gestión de bodega e inventario
+            Gestión de bódega y control de inventario
           </p>
         </div>
 
