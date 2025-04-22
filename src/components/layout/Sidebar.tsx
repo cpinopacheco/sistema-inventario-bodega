@@ -23,8 +23,12 @@ const Sidebar = () => {
 
   return (
     <div className="w-64 h-full bg-primary text-neutral-white">
-      <div className="p-4 border-b border-primary-light">
-        <h2 className="text-xl font-bold">Sistema de Bodega</h2>
+      <div className="p-4 border-b border-primary-light flex justify-center items-center">
+        <img
+          src="/cenpecar-logo.png"
+          alt="CENPECAR Logo"
+          style={{ width: "75px", height: "auto" }}
+        />
       </div>
       <nav className="mt-6">
         <ul>

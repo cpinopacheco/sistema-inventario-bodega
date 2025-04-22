@@ -11,10 +11,12 @@ import {
   FaFilter,
   FaSortAmountDown,
   FaSortAmountUp,
+  FaTags,
 } from "react-icons/fa";
 import { useProducts, type Product } from "../context/ProductContext";
 import { useWithdrawal } from "../context/WithdrawalContext";
 import ProductForm from "../components/products/ProductForm";
+import CategoriesList from "../components/categories/CategoriesList";
 import { Tooltip } from "../components/ui/Tooltip";
 
 const Products = () => {
@@ -24,6 +26,7 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [showProductForm, setShowProductForm] = useState(false);
+  const [showCategoriesList, setShowCategoriesList] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [sortField, setSortField] = useState<"name" | "stock" | "category">(
     "name"
@@ -116,16 +119,25 @@ const Products = () => {
         <h1 className="text-2xl font-bold text-neutral-dark">
           Gestión de Productos
         </h1>
-        <button
-          onClick={() => {
-            setSelectedProduct(null);
-            setShowProductForm(true);
-          }}
-          className="inline-flex items-center px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-light transition-colors"
-        >
-          <FaPlus className="mr-2" />
-          Nuevo Producto
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setShowCategoriesList(true)}
+            className="inline-flex items-center px-4 py-2 bg-accent text-neutral-white rounded-md hover:bg-opacity-90 transition-colors"
+          >
+            <FaTags className="mr-2" />
+            Gestionar Categorías
+          </button>
+          <button
+            onClick={() => {
+              setSelectedProduct(null);
+              setShowProductForm(true);
+            }}
+            className="inline-flex items-center px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-light transition-colors"
+          >
+            <FaPlus className="mr-2" />
+            Nuevo Producto
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
@@ -374,6 +386,12 @@ const Products = () => {
             }}
             isVisible={showProductForm}
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCategoriesList && (
+          <CategoriesList onClose={() => setShowCategoriesList(false)} />
         )}
       </AnimatePresence>
 
