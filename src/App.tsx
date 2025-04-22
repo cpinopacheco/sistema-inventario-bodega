@@ -1,6 +1,6 @@
 "use client";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { MotionConfig } from "framer-motion";
 import { AuthProvider } from "./context/AuthContext";
@@ -19,7 +19,7 @@ import Statistics from "./pages/Statistics";
 function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <BrowserRouter>
+      <HashRouter>
         <AuthProvider>
           <ProductProvider>
             <WithdrawalProvider>
@@ -65,7 +65,7 @@ function App() {
             </WithdrawalProvider>
           </ProductProvider>
         </AuthProvider>
-      </BrowserRouter>
+      </HashRouter>
     </MotionConfig>
   );
 }
