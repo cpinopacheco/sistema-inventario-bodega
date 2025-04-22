@@ -13,15 +13,35 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Nueva paleta de colores personalizada
+        primary: {
+          DEFAULT: "#013A1A", // Verde oscuro (principal)
+          light: "#025928", // Verde medio
+          lighter: "#0B7A40", // Verde claro
+          lightest: "#E6F2ED", // Verde muy claro
+        },
+        accent: {
+          DEFAULT: "#D4A72C", // Dorado/Ámbar
+          light: "#F5F1E6", // Beige claro
+        },
+        neutral: {
+          dark: "#333333", // Gris oscuro
+          medium: "#666666", // Gris medio
+          light: "#E5E5E5", // Gris claro
+          white: "#FFFFFF", // Blanco
+        },
+        state: {
+          success: "#0B7A40", // Verde claro (mismo que primary.lighter)
+          error: "#D64045", // Rojo
+          warning: "#F9A03F", // Ámbar
+          info: "#2D7DD2", // Azul
+        },
+        // Mantener las variables originales de shadcn/ui
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -33,10 +53,6 @@ module.exports = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

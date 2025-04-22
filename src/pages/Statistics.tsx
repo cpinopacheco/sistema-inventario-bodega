@@ -144,15 +144,15 @@ const Statistics = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Estadísticas</h1>
+        <h1 className="text-2xl font-bold text-neutral-dark">Estadísticas</h1>
         <div className="inline-flex rounded-md shadow-sm">
           <button
             onClick={() => setPeriod("week")}
             className={`px-4 py-2 text-sm font-medium rounded-l-md ${
               period === "week"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 hover:bg-gray-50"
-            } border border-gray-300`}
+                ? "bg-primary text-neutral-white"
+                : "bg-neutral-white text-neutral-dark hover:bg-primary-lightest"
+            } border border-neutral-light`}
           >
             Semanal
           </button>
@@ -160,9 +160,9 @@ const Statistics = () => {
             onClick={() => setPeriod("month")}
             className={`px-4 py-2 text-sm font-medium ${
               period === "month"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 hover:bg-gray-50"
-            } border-t border-b border-gray-300`}
+                ? "bg-primary text-neutral-white"
+                : "bg-neutral-white text-neutral-dark hover:bg-primary-lightest"
+            } border-t border-b border-neutral-light`}
           >
             Mensual
           </button>
@@ -170,17 +170,17 @@ const Statistics = () => {
             onClick={() => setPeriod("year")}
             className={`px-4 py-2 text-sm font-medium rounded-r-md ${
               period === "year"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 hover:bg-gray-50"
-            } border border-gray-300`}
+                ? "bg-primary text-neutral-white"
+                : "bg-neutral-white text-neutral-dark hover:bg-primary-lightest"
+            } border border-neutral-light`}
           >
             Anual
           </button>
         </div>
       </div>
 
-      <div className="bg-blue-50 p-4 rounded-md mb-4">
-        <p className="text-sm text-blue-800">
+      <div className="bg-primary-lightest p-4 rounded-md mb-4">
+        <p className="text-sm text-primary">
           Mostrando estadísticas de retiros de la{" "}
           <strong>{getPeriodText()}</strong>. La distribución por categoría
           muestra el estado actual del inventario.
@@ -192,15 +192,17 @@ const Statistics = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-white rounded-lg shadow-md p-6"
+          className="bg-neutral-white rounded-lg shadow-md p-6"
         >
           <div className="flex items-center">
-            <div className="rounded-full bg-blue-100 p-3 mr-4">
-              <FaChartBar className="text-blue-600 text-xl" />
+            <div className="rounded-full bg-primary-lightest p-3 mr-4">
+              <FaChartBar className="text-primary text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Total Productos</p>
-              <p className="text-2xl font-bold">{totalProducts}</p>
+              <p className="text-sm text-neutral-medium">Total Productos</p>
+              <p className="text-2xl font-bold text-neutral-dark">
+                {totalProducts}
+              </p>
             </div>
           </div>
         </motion.div>
@@ -209,15 +211,17 @@ const Statistics = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="bg-white rounded-lg shadow-md p-6"
+          className="bg-neutral-white rounded-lg shadow-md p-6"
         >
           <div className="flex items-center">
-            <div className="rounded-full bg-red-100 p-3 mr-4">
-              <FaChartLine className="text-red-600 text-xl" />
+            <div className="rounded-full bg-state-error bg-opacity-10 p-3 mr-4">
+              <FaChartLine className="text-state-error text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Stock Bajo</p>
-              <p className="text-2xl font-bold">{lowStockProducts.length}</p>
+              <p className="text-sm text-neutral-medium">Stock Bajo</p>
+              <p className="text-2xl font-bold text-state-error">
+                {lowStockProducts.length}
+              </p>
             </div>
           </div>
         </motion.div>
@@ -226,15 +230,17 @@ const Statistics = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.2 }}
-          className="bg-white rounded-lg shadow-md p-6"
+          className="bg-neutral-white rounded-lg shadow-md p-6"
         >
           <div className="flex items-center">
-            <div className="rounded-full bg-green-100 p-3 mr-4">
-              <FaChartPie className="text-green-600 text-xl" />
+            <div className="rounded-full bg-state-success bg-opacity-10 p-3 mr-4">
+              <FaChartPie className="text-state-success text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Total Retiros</p>
-              <p className="text-2xl font-bold">{totalWithdrawals}</p>
+              <p className="text-sm text-neutral-medium">Total Retiros</p>
+              <p className="text-2xl font-bold text-state-success">
+                {totalWithdrawals}
+              </p>
             </div>
           </div>
         </motion.div>
@@ -243,15 +249,17 @@ const Statistics = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.3 }}
-          className="bg-white rounded-lg shadow-md p-6"
+          className="bg-neutral-white rounded-lg shadow-md p-6"
         >
           <div className="flex items-center">
-            <div className="rounded-full bg-purple-100 p-3 mr-4">
-              <FaCalendarAlt className="text-purple-600 text-xl" />
+            <div className="rounded-full bg-accent bg-opacity-10 p-3 mr-4">
+              <FaCalendarAlt className="text-accent text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Items Retirados</p>
-              <p className="text-2xl font-bold">{totalItemsWithdrawn}</p>
+              <p className="text-sm text-neutral-medium">Items Retirados</p>
+              <p className="text-2xl font-bold text-accent">
+                {totalItemsWithdrawn}
+              </p>
             </div>
           </div>
         </motion.div>
@@ -262,10 +270,10 @@ const Statistics = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="bg-white rounded-lg shadow-md overflow-hidden"
+          className="bg-neutral-white rounded-lg shadow-md overflow-hidden"
         >
-          <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">
-            <h2 className="text-lg font-semibold text-gray-800">
+          <div className="px-6 py-4 bg-primary-lightest border-b border-primary-lightest">
+            <h2 className="text-lg font-semibold text-primary">
               Distribución por Categoría
             </h2>
           </div>
@@ -275,14 +283,16 @@ const Statistics = () => {
                 {sortedCategories.map(([category, count], index) => (
                   <div key={category}>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-neutral-dark">
                         {category}
                       </span>
-                      <span className="text-gray-500">{count} productos</span>
+                      <span className="text-neutral-medium">
+                        {count} productos
+                      </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div className="w-full bg-neutral-light rounded-full h-2.5">
                       <motion.div
-                        className="bg-blue-600 h-2.5 rounded-full"
+                        className="bg-primary h-2.5 rounded-full"
                         style={{ width: `${(count / totalProducts) * 100}%` }}
                         initial="initial"
                         animate="animate"
@@ -294,7 +304,7 @@ const Statistics = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-center py-4 text-gray-500">
+              <p className="text-center py-4 text-neutral-medium">
                 No hay datos para el período seleccionado
               </p>
             )}
@@ -305,10 +315,10 @@ const Statistics = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="bg-white rounded-lg shadow-md overflow-hidden"
+          className="bg-neutral-white rounded-lg shadow-md overflow-hidden"
         >
-          <div className="px-6 py-4 bg-green-50 border-b border-green-100">
-            <h2 className="text-lg font-semibold text-gray-800">
+          <div className="px-6 py-4 bg-state-success bg-opacity-10 border-b border-state-success border-opacity-10">
+            <h2 className="text-lg font-semibold text-primary">
               Productos Más Retirados
             </h2>
           </div>
@@ -318,12 +328,16 @@ const Statistics = () => {
                 {topWithdrawnProducts.map(({ id, name, quantity }, index) => (
                   <div key={id}>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="font-medium text-gray-900">{name}</span>
-                      <span className="text-gray-500">{quantity} unidades</span>
+                      <span className="font-medium text-neutral-dark">
+                        {name}
+                      </span>
+                      <span className="text-neutral-medium">
+                        {quantity} unidades
+                      </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div className="w-full bg-neutral-light rounded-full h-2.5">
                       <motion.div
-                        className="bg-green-600 h-2.5 rounded-full"
+                        className="bg-state-success h-2.5 rounded-full"
                         style={{
                           width: `${
                             (quantity /
@@ -343,7 +357,7 @@ const Statistics = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-center py-4 text-gray-500">
+              <p className="text-center py-4 text-neutral-medium">
                 No hay retiros para el período seleccionado
               </p>
             )}
@@ -355,10 +369,10 @@ const Statistics = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white rounded-lg shadow-md overflow-hidden"
+        className="bg-neutral-white rounded-lg shadow-md overflow-hidden"
       >
-        <div className="px-6 py-4 bg-purple-50 border-b border-purple-100">
-          <h2 className="text-lg font-semibold text-gray-800">
+        <div className="px-6 py-4 bg-accent-light border-b border-accent-light">
+          <h2 className="text-lg font-semibold text-primary">
             Retiros por Sección
           </h2>
         </div>
@@ -369,16 +383,16 @@ const Statistics = () => {
                 {sortedSections.map(([section, count], index) => (
                   <div key={section}>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-neutral-dark">
                         {section}
                       </span>
-                      <span className="text-gray-500">
+                      <span className="text-neutral-medium">
                         {count} {count === 1 ? "retiro" : "retiros"}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div className="w-full bg-neutral-light rounded-full h-2.5">
                       <motion.div
-                        className="bg-purple-600 h-2.5 rounded-full"
+                        className="bg-accent h-2.5 rounded-full"
                         style={{
                           width: `${
                             (count /
@@ -398,18 +412,20 @@ const Statistics = () => {
 
               <div className="flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-gray-800 mb-2">
+                  <div className="text-4xl font-bold text-neutral-dark mb-2">
                     {sortedSections.length}
                   </div>
-                  <p className="text-sm text-gray-500">Secciones Activas</p>
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-neutral-medium">
+                    Secciones Activas
+                  </p>
+                  <p className="text-sm text-neutral-medium mt-2">
                     Total de retiros: {filteredWithdrawals.length}
                   </p>
                 </div>
               </div>
             </div>
           ) : (
-            <p className="text-center py-4 text-gray-500">
+            <p className="text-center py-4 text-neutral-medium">
               No hay retiros para el período seleccionado
             </p>
           )}

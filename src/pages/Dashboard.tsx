@@ -88,8 +88,8 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-neutral-dark">Dashboard</h1>
+        <p className="text-sm text-neutral-medium">
           Última actualización: {new Date().toLocaleDateString()}{" "}
           {new Date().toLocaleTimeString()}
         </p>
@@ -104,56 +104,62 @@ const Dashboard = () => {
         {/* Total de productos */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-lg shadow-md p-6 flex items-center"
+          className="bg-neutral-white rounded-lg shadow-md p-6 flex items-center"
         >
-          <div className="rounded-full bg-blue-100 p-3 mr-4">
-            <FaBoxes className="text-blue-600 text-xl" />
+          <div className="rounded-full bg-primary-lightest p-3 mr-4">
+            <FaBoxes className="text-primary text-xl" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Total Productos</p>
-            <p className="text-2xl font-bold">{totalProducts}</p>
+            <p className="text-sm text-neutral-medium">Total Productos</p>
+            <p className="text-2xl font-bold text-neutral-dark">
+              {totalProducts}
+            </p>
           </div>
         </motion.div>
 
         {/* Productos con stock bajo */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-lg shadow-md p-6 flex items-center"
+          className="bg-neutral-white rounded-lg shadow-md p-6 flex items-center"
         >
-          <div className="rounded-full bg-red-100 p-3 mr-4">
-            <FaExclamationTriangle className="text-red-600 text-xl" />
+          <div className="rounded-full bg-state-error bg-opacity-10 p-3 mr-4">
+            <FaExclamationTriangle className="text-state-error text-xl" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Stock Bajo</p>
-            <p className="text-2xl font-bold">{lowStockProducts.length}</p>
+            <p className="text-sm text-neutral-medium">Stock Bajo</p>
+            <p className="text-2xl font-bold text-state-error">
+              {lowStockProducts.length}
+            </p>
           </div>
         </motion.div>
 
         {/* Total de categorías */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-lg shadow-md p-6 flex items-center"
+          className="bg-neutral-white rounded-lg shadow-md p-6 flex items-center"
         >
-          <div className="rounded-full bg-green-100 p-3 mr-4">
-            <FaClipboardList className="text-green-600 text-xl" />
+          <div className="rounded-full bg-primary-lightest p-3 mr-4">
+            <FaClipboardList className="text-primary-lighter text-xl" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Categorías</p>
-            <p className="text-2xl font-bold">{totalCategories}</p>
+            <p className="text-sm text-neutral-medium">Categorías</p>
+            <p className="text-2xl font-bold text-primary-lighter">
+              {totalCategories}
+            </p>
           </div>
         </motion.div>
 
         {/* Total de retiros */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-lg shadow-md p-6 flex items-center"
+          className="bg-neutral-white rounded-lg shadow-md p-6 flex items-center"
         >
-          <div className="rounded-full bg-purple-100 p-3 mr-4">
-            <FaFileAlt className="text-purple-600 text-xl" />
+          <div className="rounded-full bg-accent bg-opacity-10 p-3 mr-4">
+            <FaFileAlt className="text-accent text-xl" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Retiros</p>
-            <p className="text-2xl font-bold">{totalWithdrawals}</p>
+            <p className="text-sm text-neutral-medium">Retiros</p>
+            <p className="text-2xl font-bold text-accent">{totalWithdrawals}</p>
           </div>
         </motion.div>
       </motion.div>
@@ -162,22 +168,22 @@ const Dashboard = () => {
         {/* Productos recientes */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-lg shadow-md overflow-hidden"
+          className="bg-neutral-white rounded-lg shadow-md overflow-hidden"
         >
-          <div className="bg-blue-50 px-6 py-4 border-b border-blue-100 flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-gray-800">
+          <div className="bg-primary-lightest px-6 py-4 border-b border-primary-lightest flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-primary">
               Productos Recientes
             </h2>
             <Link
               to="/products"
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              className="text-primary hover:text-primary-light text-sm font-medium"
             >
               Ver todos
             </Link>
           </div>
           <div className="p-4">
             {recentProducts.length > 0 ? (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-neutral-light">
                 {recentProducts.map((product) => (
                   <div
                     key={product.id}
@@ -185,10 +191,10 @@ const Dashboard = () => {
                   >
                     <div className="flex items-center">
                       <div className="ml-0">
-                        <p className="text-sm font-medium text-gray-800">
+                        <p className="text-sm font-medium text-neutral-dark">
                           {product.name}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-neutral-medium">
                           {product.category}
                         </p>
                       </div>
@@ -200,8 +206,8 @@ const Dashboard = () => {
                       <p
                         className={`text-xs ${
                           product.stock <= product.minStock
-                            ? "text-red-600"
-                            : "text-green-600"
+                            ? "text-state-error"
+                            : "text-state-success"
                         }`}
                       >
                         {product.stock <= product.minStock
@@ -213,7 +219,7 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-4">
+              <p className="text-neutral-medium text-center py-4">
                 No hay productos registrados aún
               </p>
             )}
@@ -223,30 +229,30 @@ const Dashboard = () => {
         {/* Retiros recientes */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-lg shadow-md overflow-hidden"
+          className="bg-neutral-white rounded-lg shadow-md overflow-hidden"
         >
-          <div className="bg-purple-50 px-6 py-4 border-b border-purple-100 flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-gray-800">
+          <div className="bg-accent-light px-6 py-4 border-b border-accent-light flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-primary">
               Retiros Recientes
             </h2>
             <Link
               to="/withdrawals"
-              className="text-purple-600 hover:text-purple-800 text-sm font-medium"
+              className="text-primary hover:text-primary-light text-sm font-medium"
             >
               Ver todos
             </Link>
           </div>
           <div className="p-4">
             {recentWithdrawals.length > 0 ? (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-neutral-light">
                 {recentWithdrawals.map((withdrawal) => (
                   <div key={withdrawal.id} className="py-3">
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="text-sm font-medium text-gray-800">
+                        <p className="text-sm font-medium text-neutral-dark">
                           Retiro #{withdrawal.id} - {withdrawal.userName}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-neutral-medium">
                           {new Date(withdrawal.createdAt).toLocaleDateString()}{" "}
                           - {withdrawal.userSection}
                         </p>
@@ -261,7 +267,7 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-4">
+              <p className="text-neutral-medium text-center py-4">
                 No hay retiros registrados aún
               </p>
             )}
@@ -272,17 +278,17 @@ const Dashboard = () => {
       {/* Estadísticas */}
       <motion.div
         variants={itemVariants}
-        className="bg-white rounded-lg shadow-md overflow-hidden"
+        className="bg-neutral-white rounded-lg shadow-md overflow-hidden"
       >
-        <div className="bg-gray-50 px-6 py-4 border-b">
-          <h2 className="text-lg font-semibold text-gray-800">
+        <div className="bg-primary-lightest px-6 py-4 border-b">
+          <h2 className="text-lg font-semibold text-primary">
             Resumen de Inventario
           </h2>
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-md font-medium mb-3 text-gray-700">
+              <h3 className="text-md font-medium mb-3 text-primary">
                 Principales Categorías
               </h3>
               <div className="space-y-2">
@@ -299,14 +305,14 @@ const Dashboard = () => {
                       key={category}
                       className="flex items-center justify-between"
                     >
-                      <p className="text-sm">{category}</p>
+                      <p className="text-sm text-neutral-dark">{category}</p>
                       <div className="flex items-center">
-                        <span className="text-sm font-medium mr-2">
+                        <span className="text-sm font-medium mr-2 text-neutral-medium">
                           {count}
                         </span>
-                        <div className="bg-gray-200 h-2 w-36 rounded-full overflow-hidden">
+                        <div className="bg-neutral-light h-2 w-36 rounded-full overflow-hidden">
                           <div
-                            className="bg-blue-600 h-full rounded-full"
+                            className="bg-primary h-full rounded-full"
                             style={{
                               width: `${(count / totalProducts) * 100}%`,
                             }}
@@ -318,7 +324,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div>
-              <h3 className="text-md font-medium mb-3 text-gray-700">
+              <h3 className="text-md font-medium mb-3 text-primary">
                 Productos con mayor retiro
               </h3>
               <div className="space-y-2">
@@ -327,11 +333,11 @@ const Dashboard = () => {
                     key={product.id}
                     className="flex items-center justify-between"
                   >
-                    <p className="text-sm truncate max-w-[180px]">
+                    <p className="text-sm truncate max-w-[180px] text-neutral-dark">
                       {product.name}
                     </p>
                     <div className="flex items-center">
-                      <span className="text-xs px-2 py-1 rounded-full bg-orange-100 text-orange-800 flex items-center">
+                      <span className="text-xs px-2 py-1 rounded-full bg-accent bg-opacity-10 text-accent flex items-center">
                         <FaArrowUp className="mr-1" />
                         {product.quantity} unidades
                       </span>

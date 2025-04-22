@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Paleta de colores principal */
+  --color-primary: 1, 58, 26; /* #013A1A */
+  --color-primary-medium: 2, 89, 40; /* #025928 */
+  --color-primary-light: 11, 122, 64; /* #0B7A40 */
+  --color-primary-very-light: 230, 242, 237; /* #E6F2ED */
+
+  /* Colores complementarios */
+  --color-accent: 212, 167, 44; /* #D4A72C */
+  --color-accent-light: 245, 241, 230; /* #F5F1E6 */
+
+  /* Colores neutros */
+  --color-text: 51, 51, 51; /* #333333 */
+  --color-text-secondary: 102, 102, 102; /* #666666 */
+  --color-border: 229, 229, 229; /* #E5E5E5 */
+  --color-white: 255, 255, 255; /* #FFFFFF */
+
+  /* Colores de estado */
+  --color-success: 11, 122, 64; /* #0B7A40 */
+  --color-error: 214, 64, 69; /* #D64045 */
+  --color-warning: 249, 160, 63; /* #F9A03F */
+  --color-info: 45, 125, 210; /* #2D7DD2 */
+}
+
 body {
   font-family: "Inter", sans-serif;
   @apply bg-gray-100;

@@ -113,7 +113,7 @@ const Products = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap justify-between items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 className="text-2xl font-bold text-neutral-dark">
           Gestión de Productos
         </h1>
         <button
@@ -121,7 +121,7 @@ const Products = () => {
             setSelectedProduct(null);
             setShowProductForm(true);
           }}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center px-4 py-2 bg-primary text-neutral-white rounded-md hover:bg-primary-light transition-colors"
         >
           <FaPlus className="mr-2" />
           Nuevo Producto
@@ -130,23 +130,23 @@ const Products = () => {
 
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-1/2 relative">
-          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-medium" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar productos..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-neutral-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div className="w-full md:w-1/2 flex gap-2">
           <div className="relative flex-1">
-            <FaFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FaFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-medium" />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-neutral-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary appearance-none"
             >
               <option value="all">Todas las categorías</option>
               {categories.map((category) => (
@@ -160,12 +160,12 @@ const Products = () => {
       </div>
 
       {filteredProducts.length > 0 ? (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-neutral-white rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-neutral-light">
+              <thead className="bg-primary-lightest">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
                     <button
                       onClick={() => handleSort("name")}
                       className="flex items-center focus:outline-none"
@@ -173,13 +173,13 @@ const Products = () => {
                       Producto
                       {sortField === "name" &&
                         (sortDirection === "asc" ? (
-                          <FaSortAmountUp className="ml-1 text-gray-400" />
+                          <FaSortAmountUp className="ml-1 text-primary" />
                         ) : (
-                          <FaSortAmountDown className="ml-1 text-gray-400" />
+                          <FaSortAmountDown className="ml-1 text-primary" />
                         ))}
                     </button>
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
                     <button
                       onClick={() => handleSort("category")}
                       className="flex items-center focus:outline-none"
@@ -187,13 +187,13 @@ const Products = () => {
                       Categoría
                       {sortField === "category" &&
                         (sortDirection === "asc" ? (
-                          <FaSortAmountUp className="ml-1 text-gray-400" />
+                          <FaSortAmountUp className="ml-1 text-primary" />
                         ) : (
-                          <FaSortAmountDown className="ml-1 text-gray-400" />
+                          <FaSortAmountDown className="ml-1 text-primary" />
                         ))}
                     </button>
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
                     <button
                       onClick={() => handleSort("stock")}
                       className="flex items-center focus:outline-none"
@@ -201,42 +201,44 @@ const Products = () => {
                       Stock
                       {sortField === "stock" &&
                         (sortDirection === "asc" ? (
-                          <FaSortAmountUp className="ml-1 text-gray-400" />
+                          <FaSortAmountUp className="ml-1 text-primary" />
                         ) : (
-                          <FaSortAmountDown className="ml-1 text-gray-400" />
+                          <FaSortAmountDown className="ml-1 text-primary" />
                         ))}
                     </button>
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
                     Precio
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-primary uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-neutral-white divide-y divide-neutral-light">
                 {filteredProducts.map((product) => (
                   <tr
                     key={product.id}
-                    className={`hover:bg-gray-50 ${
-                      product.stock <= product.minStock ? "bg-red-50" : ""
+                    className={`hover:bg-primary-lightest hover:bg-opacity-30 ${
+                      product.stock <= product.minStock
+                        ? "bg-state-error bg-opacity-10"
+                        : ""
                     }`}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="ml-0">
-                          <div className="text-sm font-medium text-gray-900">
+                          <div className="text-sm font-medium text-neutral-dark">
                             {product.name}
                           </div>
-                          <div className="text-sm text-gray-500 max-w-xs truncate">
+                          <div className="text-sm text-neutral-medium max-w-xs truncate">
                             {product.description}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-lightest text-primary">
                         {product.category}
                       </span>
                     </td>
@@ -244,19 +246,21 @@ const Products = () => {
                       <div
                         className={`text-sm font-medium ${
                           product.stock <= product.minStock
-                            ? "text-red-600"
+                            ? "text-state-error"
                             : product.stock <= product.minStock * 2
-                            ? "text-yellow-600"
-                            : "text-green-600"
+                            ? "text-state-warning"
+                            : "text-state-success"
                         }`}
                       >
                         {product.stock} unidades
                       </div>
                       {product.stock <= product.minStock && (
-                        <div className="text-xs text-red-600">Stock bajo</div>
+                        <div className="text-xs text-state-error">
+                          Stock bajo
+                        </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-medium">
                       ${product.price.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -272,7 +276,7 @@ const Products = () => {
                                 )
                               )
                             }
-                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-l-md hover:bg-gray-300"
+                            className="w-8 h-8 flex items-center justify-center bg-neutral-light rounded-l-md hover:bg-primary hover:text-neutral-white transition-colors"
                             aria-label="Disminuir cantidad"
                           >
                             -
@@ -287,7 +291,7 @@ const Products = () => {
                                 Number.parseInt(e.target.value) || 1
                               )
                             }
-                            className="w-16 h-8 text-center border-t border-b border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className="w-16 h-8 text-center border-t border-b border-neutral-light [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-primary focus:ring-primary"
                             style={{ textAlign: "center" }}
                           />
                           <button
@@ -297,7 +301,7 @@ const Products = () => {
                                 (quantityInputs[product.id] || 1) + 1
                               )
                             }
-                            className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-r-md hover:bg-gray-300"
+                            className="w-8 h-8 flex items-center justify-center bg-neutral-light rounded-r-md hover:bg-primary hover:text-neutral-white transition-colors"
                             aria-label="Aumentar cantidad"
                           >
                             +
@@ -313,28 +317,28 @@ const Products = () => {
                                   quantityInputs[product.id] || 1
                                 )
                               }
-                              className="text-blue-600 hover:text-blue-900 p-1"
+                              className="text-primary-lighter hover:bg-primary-lighter hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
                               disabled={product.stock <= 0}
                             >
-                              <FaPlus size={18} />
+                              <FaPlus size={16} />
                             </button>
                           </Tooltip>
 
                           <Tooltip content="Editar" position="top">
                             <button
                               onClick={() => handleEdit(product)}
-                              className="text-indigo-600 hover:text-indigo-900 p-1"
+                              className="text-state-info hover:bg-state-info hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
                             >
-                              <FaEdit size={18} />
+                              <FaEdit size={16} />
                             </button>
                           </Tooltip>
 
                           <Tooltip content="Eliminar" position="top">
                             <button
                               onClick={() => handleDeleteConfirm(product.id)}
-                              className="text-red-600 hover:text-red-900 p-1"
+                              className="text-state-error hover:bg-state-error hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
                             >
-                              <FaTrash size={18} />
+                              <FaTrash size={16} />
                             </button>
                           </Tooltip>
                         </div>
@@ -347,12 +351,12 @@ const Products = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-md p-8 text-center">
-          <FaBoxes className="mx-auto text-gray-400 text-5xl mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-1">
+        <div className="bg-neutral-white rounded-lg shadow-md p-8 text-center">
+          <FaBoxes className="mx-auto text-neutral-medium text-5xl mb-4" />
+          <h3 className="text-lg font-medium text-neutral-dark mb-1">
             No se encontraron productos
           </h3>
-          <p className="text-gray-500">
+          <p className="text-neutral-medium">
             {searchTerm || selectedCategory !== "all"
               ? "Intenta ajustar los filtros de búsqueda"
               : "Comienza agregando tu primer producto"}
@@ -379,31 +383,31 @@ const Products = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 p-4"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+              className="bg-neutral-white rounded-lg shadow-xl max-w-md w-full p-6"
             >
-              <h3 className="text-lg font-medium text-gray-900 mb-3">
+              <h3 className="text-lg font-medium text-neutral-dark mb-3">
                 Confirmar eliminación
               </h3>
-              <p className="text-gray-500 mb-6">
+              <p className="text-neutral-medium mb-6">
                 ¿Estás seguro de que deseas eliminar este producto? Esta acción
                 no se puede deshacer.
               </p>
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setConfirmDelete(null)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  className="px-4 py-2 border border-neutral-light rounded-md text-neutral-dark hover:bg-neutral-light"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={() => handleDelete(confirmDelete)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  className="px-4 py-2 bg-state-error text-neutral-white rounded-md hover:bg-opacity-90"
                 >
                   Eliminar
                 </button>

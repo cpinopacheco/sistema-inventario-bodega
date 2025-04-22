@@ -1,8 +1,15 @@
-"use client"
+"use client";
 
-import { NavLink } from "react-router-dom"
-import { motion } from "framer-motion"
-import { FaHome, FaBoxes, FaClipboardList, FaFileAlt, FaExclamationTriangle, FaChartBar } from "react-icons/fa"
+import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  FaHome,
+  FaBoxes,
+  FaClipboardList,
+  FaFileAlt,
+  FaExclamationTriangle,
+  FaChartBar,
+} from "react-icons/fa";
 
 const Sidebar = () => {
   const navLinks = [
@@ -12,11 +19,11 @@ const Sidebar = () => {
     { to: "/reports", icon: <FaFileAlt />, label: "Reportes" },
     { to: "/low-stock", icon: <FaExclamationTriangle />, label: "Stock Bajo" },
     { to: "/statistics", icon: <FaChartBar />, label: "Estadísticas" },
-  ]
+  ];
 
   return (
-    <div className="w-64 h-full bg-gray-800 text-white">
-      <div className="p-4 border-b border-gray-700">
+    <div className="w-64 h-full bg-primary text-neutral-white">
+      <div className="p-4 border-b border-primary-light">
         <h2 className="text-xl font-bold">Sistema de Bodega</h2>
       </div>
       <nav className="mt-6">
@@ -27,7 +34,9 @@ const Sidebar = () => {
                 to={link.to}
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-md transition-all ${
-                    isActive ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-gray-700"
+                    isActive
+                      ? "bg-primary-lighter text-neutral-white"
+                      : "text-neutral-light hover:bg-primary-light"
                   }`
                 }
               >
@@ -38,7 +47,7 @@ const Sidebar = () => {
                     {isActive && (
                       <motion.div
                         layoutId="sidebar-indicator"
-                        className="absolute left-0 bg-white w-1 h-8 rounded-r-full"
+                        className="absolute left-0 bg-accent w-1 h-8 rounded-r-full"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.2 }}
@@ -52,7 +61,7 @@ const Sidebar = () => {
         </ul>
       </nav>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

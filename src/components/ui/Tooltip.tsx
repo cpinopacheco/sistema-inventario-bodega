@@ -87,7 +87,7 @@ export const Tooltip = ({
         {isVisible && (
           <motion.div
             ref={tooltipRef}
-            className="fixed z-[9999] whitespace-nowrap px-3 py-1.5 text-xs font-medium text-white bg-gray-800 rounded shadow pointer-events-none"
+            className="fixed z-[9999] whitespace-nowrap px-3 py-1.5 text-xs font-medium text-neutral-white bg-primary rounded shadow pointer-events-none"
             style={{
               top: tooltipPosition.top,
               left: tooltipPosition.left,
