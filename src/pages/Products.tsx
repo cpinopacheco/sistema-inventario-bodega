@@ -208,9 +208,6 @@ const Products = () => {
                     </button>
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ubicación
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Precio
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -228,18 +225,7 @@ const Products = () => {
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10 rounded-md bg-gray-200 flex items-center justify-center overflow-hidden">
-                          {product.image ? (
-                            <img
-                              src={product.image || "/placeholder.svg"}
-                              alt={product.name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <FaBoxes className="text-gray-400" />
-                          )}
-                        </div>
-                        <div className="ml-4">
+                        <div className="ml-0">
                           <div className="text-sm font-medium text-gray-900">
                             {product.name}
                           </div>
@@ -269,9 +255,6 @@ const Products = () => {
                       {product.stock <= product.minStock && (
                         <div className="text-xs text-red-600">Stock bajo</div>
                       )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {product.location || "No especificada"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       ${product.price.toLocaleString()}

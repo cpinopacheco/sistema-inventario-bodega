@@ -1,43 +1,54 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { FaFileExcel, FaChartPie, FaBoxes, FaClipboardList } from "react-icons/fa"
-import { useProducts } from "../context/ProductContext"
-import { useWithdrawal } from "../context/WithdrawalContext"
-import { ExportToExcel } from "../utils/ExcelExport"
-import { formatDate } from "../utils/DateUtils"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaFileExcel,
+  FaChartPie,
+  FaBoxes,
+  FaClipboardList,
+} from "react-icons/fa";
+import { useProducts } from "../context/ProductContext";
+import { useWithdrawal } from "../context/WithdrawalContext";
+import { ExportToExcel } from "../utils/ExcelExport";
+import { formatDate } from "../utils/DateUtils";
 
 const Reports = () => {
-  const { products } = useProducts()
-  const { withdrawals } = useWithdrawal()
+  const { products } = useProducts();
+  const { withdrawals } = useWithdrawal();
 
-  const [activeTab, setActiveTab] = useState<"stock" | "withdrawals">("stock")
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
-  const [category, setCategory] = useState("all")
+  const [activeTab, setActiveTab] = useState<"stock" | "withdrawals">("stock");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [category, setCategory] = useState("all");
 
   // Filtrar retiros por fecha
   const filteredWithdrawals = withdrawals.filter((withdrawal) => {
-    const withdrawalDate = new Date(withdrawal.createdAt)
-    const start = startDate ? new Date(startDate) : null
-    const end = endDate ? new Date(endDate) : null
+    const withdrawalDate = new Date(withdrawal.createdAt);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
 
-    if (start && withdrawalDate < start) return false
+    if (start && withdrawalDate < start) return false;
     if (end) {
-      const endDateWithTime = new Date(end)
-      endDateWithTime.setHours(23, 59, 59, 999)
-      if (withdrawalDate > endDateWithTime) return false
+      const endDateWithTime = new Date(end);
+      endDateWithTime.setHours(23, 59, 59, 999);
+      if (withdrawalDate > endDateWithTime) return false;
     }
 
-    return true
-  })
+    return true;
+  });
 
   // Filtrar productos por categoría
-  const filteredProducts = category === "all" ? products : products.filter((product) => product.category === category)
+  const filteredProducts =
+    category === "all"
+      ? products
+      : products.filter((product) => product.category === category);
 
   // Categorías únicas
-  const categories = ["all", ...new Set(products.map((product) => product.category))]
+  const categories = [
+    "all",
+    ...new Set(products.map((product) => product.category)),
+  ];
 
   // Exportar reporte de stock a Excel
   const exportStockReport = () => {
@@ -48,36 +59,43 @@ const Reports = () => {
       Stock: product.stock,
       "Stock Mínimo": product.minStock,
       "Stock Bajo": product.stock <= product.minStock ? "Sí" : "No",
-      Ubicación: product.location,
       Precio: product.price,
       "Última Actualización": formatDate(product.updatedAt),
-    }))
+    }));
 
-    ExportToExcel(stockData, `Reporte_Stock_${formatDate(new Date().toISOString(), "simple")}`)
-  }
+    ExportToExcel(
+      stockData,
+      `Reporte_Stock_${formatDate(new Date().toISOString(), "simple")}`
+    );
+  };
 
   // Exportar reporte de retiros a Excel
   const exportWithdrawalsReport = () => {
-    let allWithdrawalItems: any[] = []
+    let allWithdrawalItems: any[] = [];
 
     filteredWithdrawals.forEach((withdrawal) => {
       const items = withdrawal.items.map((item) => ({
         "ID Retiro": withdrawal.id,
         Fecha: formatDate(withdrawal.createdAt),
         Hora: formatDate(withdrawal.createdAt, "time"),
-        Usuario: withdrawal.userName,
-        Sección: withdrawal.userSection,
+        "Usuario que registra": withdrawal.userName,
+        "Sección que registra": withdrawal.userSection,
+        "Persona que retira": withdrawal.withdrawerName,
+        "Sección que retira": withdrawal.withdrawerSection,
         Producto: item.product.name,
         Categoría: item.product.category,
         Cantidad: item.quantity,
         Notas: withdrawal.notes || "N/A",
-      }))
+      }));
 
-      allWithdrawalItems = [...allWithdrawalItems, ...items]
-    })
+      allWithdrawalItems = [...allWithdrawalItems, ...items];
+    });
 
-    ExportToExcel(allWithdrawalItems, `Reporte_Retiros_${formatDate(new Date().toISOString(), "simple")}`)
-  }
+    ExportToExcel(
+      allWithdrawalItems,
+      `Reporte_Retiros_${formatDate(new Date().toISOString(), "simple")}`
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -125,7 +143,10 @@ const Reports = () => {
             >
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div className="w-full sm:w-auto">
-                  <label htmlFor="category-filter" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="category-filter"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Filtrar por categoría
                   </label>
                   <select
@@ -155,22 +176,32 @@ const Reports = () => {
               </div>
 
               <div className="bg-gray-50 p-4 rounded-md mb-6">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Resumen</h3>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">
+                  Resumen
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-white p-4 rounded-md shadow-sm">
                     <p className="text-sm text-gray-500">Total de productos</p>
-                    <p className="text-2xl font-bold text-gray-900">{filteredProducts.length}</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {filteredProducts.length}
+                    </p>
                   </div>
                   <div className="bg-white p-4 rounded-md shadow-sm">
                     <p className="text-sm text-gray-500">Stock bajo</p>
                     <p className="text-2xl font-bold text-red-600">
-                      {filteredProducts.filter((p) => p.stock <= p.minStock).length}
+                      {
+                        filteredProducts.filter((p) => p.stock <= p.minStock)
+                          .length
+                      }
                     </p>
                   </div>
                   <div className="bg-white p-4 rounded-md shadow-sm">
                     <p className="text-sm text-gray-500">Stock normal</p>
                     <p className="text-2xl font-bold text-green-600">
-                      {filteredProducts.filter((p) => p.stock > p.minStock).length}
+                      {
+                        filteredProducts.filter((p) => p.stock > p.minStock)
+                          .length
+                      }
                     </p>
                   </div>
                   <div className="bg-white p-4 rounded-md shadow-sm">
@@ -199,9 +230,6 @@ const Reports = () => {
                         Stock Mínimo
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Ubicación
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Última Actualización
                       </th>
                     </tr>
@@ -210,31 +238,40 @@ const Reports = () => {
                     {filteredProducts.map((product) => (
                       <tr
                         key={product.id}
-                        className={`hover:bg-gray-50 ${product.stock <= product.minStock ? "bg-red-50" : ""}`}
+                        className={`hover:bg-gray-50 ${
+                          product.stock <= product.minStock ? "bg-red-50" : ""
+                        }`}
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.name}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{product.category}</div>
+                          <div className="text-sm text-gray-500">
+                            {product.category}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div
                             className={`text-sm font-medium ${
-                              product.stock <= product.minStock ? "text-red-600" : "text-green-600"
+                              product.stock <= product.minStock
+                                ? "text-red-600"
+                                : "text-green-600"
                             }`}
                           >
                             {product.stock}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{product.minStock}</div>
+                          <div className="text-sm text-gray-500">
+                            {product.minStock}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{product.location || "No especificada"}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{formatDate(product.updatedAt)}</div>
+                          <div className="text-sm text-gray-500">
+                            {formatDate(product.updatedAt)}
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -254,7 +291,10 @@ const Reports = () => {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-4">
                   <div>
-                    <label htmlFor="start-date" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="start-date"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Fecha inicio
                     </label>
                     <input
@@ -266,7 +306,10 @@ const Reports = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="end-date" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="end-date"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Fecha fin
                     </label>
                     <input
@@ -289,22 +332,35 @@ const Reports = () => {
               </div>
 
               <div className="bg-gray-50 p-4 rounded-md mb-6">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Resumen</h3>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">
+                  Resumen
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="bg-white p-4 rounded-md shadow-sm">
                     <p className="text-sm text-gray-500">Total retiros</p>
-                    <p className="text-2xl font-bold text-gray-900">{filteredWithdrawals.length}</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {filteredWithdrawals.length}
+                    </p>
                   </div>
                   <div className="bg-white p-4 rounded-md shadow-sm">
-                    <p className="text-sm text-gray-500">Total items retirados</p>
+                    <p className="text-sm text-gray-500">
+                      Total items retirados
+                    </p>
                     <p className="text-2xl font-bold text-blue-600">
-                      {filteredWithdrawals.reduce((sum, w) => sum + w.totalItems, 0)}
+                      {filteredWithdrawals.reduce(
+                        (sum, w) => sum + w.totalItems,
+                        0
+                      )}
                     </p>
                   </div>
                   <div className="bg-white p-4 rounded-md shadow-sm">
                     <p className="text-sm text-gray-500">Usuarios distintos</p>
                     <p className="text-2xl font-bold text-purple-600">
-                      {new Set(filteredWithdrawals.map((w) => w.userName)).size}
+                      {
+                        new Set(
+                          filteredWithdrawals.map((w) => w.withdrawerName)
+                        ).size
+                      }
                     </p>
                   </div>
                 </div>
@@ -323,7 +379,7 @@ const Reports = () => {
                             Fecha
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Usuario
+                            Persona que retira
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Sección
@@ -337,19 +393,29 @@ const Reports = () => {
                         {filteredWithdrawals.map((withdrawal) => (
                           <tr key={withdrawal.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-gray-900">#{withdrawal.id}</div>
+                              <div className="text-sm font-medium text-gray-900">
+                                #{withdrawal.id}
+                              </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">{formatDate(withdrawal.createdAt)}</div>
+                              <div className="text-sm text-gray-500">
+                                {formatDate(withdrawal.createdAt)}
+                              </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">{withdrawal.userName}</div>
+                              <div className="text-sm text-gray-900">
+                                {withdrawal.withdrawerName}
+                              </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">{withdrawal.userSection}</div>
+                              <div className="text-sm text-gray-500">
+                                {withdrawal.withdrawerSection}
+                              </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">{withdrawal.totalItems}</div>
+                              <div className="text-sm text-gray-900">
+                                {withdrawal.totalItems}
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -360,8 +426,12 @@ const Reports = () => {
               ) : (
                 <div className="text-center py-8">
                   <FaChartPie className="mx-auto text-gray-400 text-5xl mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">No hay datos para mostrar</h3>
-                  <p className="text-gray-500">No hay retiros que coincidan con los filtros seleccionados</p>
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">
+                    No hay datos para mostrar
+                  </h3>
+                  <p className="text-gray-500">
+                    No hay retiros que coincidan con los filtros seleccionados
+                  </p>
                 </div>
               )}
             </motion.div>
@@ -369,7 +439,7 @@ const Reports = () => {
         </AnimatePresence>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Reports
+export default Reports;

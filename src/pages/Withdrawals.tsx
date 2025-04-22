@@ -9,6 +9,8 @@ import {
   FaCheck,
   FaFileExcel,
   FaClipboardList,
+  FaUser,
+  FaBuilding,
 } from "react-icons/fa";
 import { useWithdrawal } from "../context/WithdrawalContext";
 import { Tooltip } from "../components/ui/Tooltip";
@@ -24,6 +26,8 @@ const Withdrawals = () => {
     confirmWithdrawal,
   } = useWithdrawal();
   const [notes, setNotes] = useState("");
+  const [withdrawerName, setWithdrawerName] = useState("");
+  const [withdrawerSection, setWithdrawerSection] = useState("");
   const [showWithdrawalHistory, setShowWithdrawalHistory] = useState(false);
   const [selectedWithdrawal, setSelectedWithdrawal] = useState<number | null>(
     null
@@ -40,8 +44,10 @@ const Withdrawals = () => {
 
   // Manejar confirmación de retiro
   const handleConfirmWithdrawal = () => {
-    confirmWithdrawal(notes);
+    confirmWithdrawal(withdrawerName, withdrawerSection, notes);
     setNotes("");
+    setWithdrawerName("");
+    setWithdrawerSection("");
   };
 
   // Manejar exportación a Excel
@@ -55,8 +61,10 @@ const Withdrawals = () => {
       Cantidad: item.quantity,
       "Fecha de retiro": new Date(withdrawal.createdAt).toLocaleDateString(),
       "Hora de retiro": new Date(withdrawal.createdAt).toLocaleTimeString(),
-      "Usuario que retira": withdrawal.userName,
-      Sección: withdrawal.userSection,
+      "Usuario que registra": withdrawal.userName,
+      "Sección que registra": withdrawal.userSection,
+      "Persona que retira": withdrawal.withdrawerName,
+      "Sección que retira": withdrawal.withdrawerSection,
       Notas: withdrawal.notes || "N/A",
     }));
 
@@ -129,20 +137,7 @@ const Withdrawals = () => {
                           <tr key={item.productId} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
-                                <div className="flex-shrink-0 h-10 w-10 rounded-md bg-gray-200 flex items-center justify-center overflow-hidden">
-                                  {item.product.image ? (
-                                    <img
-                                      src={
-                                        item.product.image || "/placeholder.svg"
-                                      }
-                                      alt={item.product.name}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <FaClipboardList className="text-gray-400" />
-                                  )}
-                                </div>
-                                <div className="ml-4">
+                                <div className="ml-0">
                                   <div className="text-sm font-medium text-gray-900">
                                     {item.product.name}
                                   </div>
@@ -212,6 +207,45 @@ const Withdrawals = () => {
                     </table>
                   </div>
 
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
+                    <div>
+                      <label
+                        htmlFor="withdrawerName"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        <FaUser className="inline mr-1" /> Nombre de quien
+                        retira <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="withdrawerName"
+                        type="text"
+                        value={withdrawerName}
+                        onChange={(e) => setWithdrawerName(e.target.value)}
+                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        placeholder="Ingrese el nombre de la persona que retira"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="withdrawerSection"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        <FaBuilding className="inline mr-1" /> Sección{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="withdrawerSection"
+                        type="text"
+                        value={withdrawerSection}
+                        onChange={(e) => setWithdrawerSection(e.target.value)}
+                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        placeholder="Ingrese la sección o departamento"
+                        required
+                      />
+                    </div>
+                  </div>
+
                   <div className="border-t pt-4">
                     <label
                       htmlFor="notes"
@@ -232,7 +266,10 @@ const Withdrawals = () => {
                   <div className="flex justify-end">
                     <button
                       onClick={handleConfirmWithdrawal}
-                      className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                      disabled={
+                        !withdrawerName.trim() || !withdrawerSection.trim()
+                      }
+                      className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <FaCheck className="mr-2" />
                       Confirmar Retiro
@@ -281,41 +318,66 @@ const Withdrawals = () => {
                     <div key={withdrawal.id} className="p-6">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="text-lg font-medium text-gray-900">
-                          Retiro #{withdrawal.id} - {withdrawal.userName}
+                          Retiro #{withdrawal.id} - {withdrawal.withdrawerName}
                         </h3>
-                        <div className="flex space-x-4">
+                        <div className="flex items-center space-x-3">
                           <Tooltip content="Exportar a Excel" position="top">
                             <button
                               onClick={() => handleExportToExcel(withdrawal.id)}
-                              className="text-green-600 hover:text-green-900 p-1"
+                              className="flex items-center justify-center w-9 h-9 text-green-600 hover:text-white hover:bg-green-600 rounded-full transition-colors"
+                              aria-label="Exportar a Excel"
                             >
-                              <FaFileExcel size={18} />
+                              <FaFileExcel size={20} />
                             </button>
                           </Tooltip>
-                          <button
-                            onClick={() =>
-                              setSelectedWithdrawal(
-                                selectedWithdrawal === withdrawal.id
-                                  ? null
-                                  : withdrawal.id
-                              )
+                          <Tooltip
+                            content={
+                              selectedWithdrawal === withdrawal.id
+                                ? "Ocultar detalles"
+                                : "Ver detalles"
                             }
-                            className="text-blue-600 hover:text-blue-900 p-1"
+                            position="top"
                           >
-                            {selectedWithdrawal === withdrawal.id ? (
-                              <FaTimes size={18} />
-                            ) : (
-                              <FaClipboardList size={18} />
-                            )}
-                          </button>
+                            <button
+                              onClick={() =>
+                                setSelectedWithdrawal(
+                                  selectedWithdrawal === withdrawal.id
+                                    ? null
+                                    : withdrawal.id
+                                )
+                              }
+                              className="flex items-center justify-center w-9 h-9 text-blue-600 hover:text-white hover:bg-blue-600 rounded-full transition-colors"
+                              aria-label={
+                                selectedWithdrawal === withdrawal.id
+                                  ? "Ocultar detalles"
+                                  : "Ver detalles"
+                              }
+                            >
+                              {selectedWithdrawal === withdrawal.id ? (
+                                <FaTimes size={20} />
+                              ) : (
+                                <FaClipboardList size={20} />
+                              )}
+                            </button>
+                          </Tooltip>
                         </div>
                       </div>
                       <div className="text-sm text-gray-500 mb-2">
-                        Fecha:{" "}
-                        {new Date(withdrawal.createdAt).toLocaleDateString()}{" "}
-                        {new Date(withdrawal.createdAt).toLocaleTimeString()} -
-                        Sección: {withdrawal.userSection} - Items:{" "}
-                        {withdrawal.totalItems}
+                        <div>
+                          <strong>Fecha:</strong>{" "}
+                          {new Date(withdrawal.createdAt).toLocaleDateString()}{" "}
+                          {new Date(withdrawal.createdAt).toLocaleTimeString()}
+                        </div>
+                        <div>
+                          <strong>Retirado por:</strong>{" "}
+                          {withdrawal.withdrawerName} -{" "}
+                          <strong>Sección:</strong>{" "}
+                          {withdrawal.withdrawerSection}
+                        </div>
+                        <div>
+                          <strong>Registrado por:</strong> {withdrawal.userName}{" "}
+                          - <strong>Items:</strong> {withdrawal.totalItems}
+                        </div>
                       </div>
 
                       {withdrawal.notes && (

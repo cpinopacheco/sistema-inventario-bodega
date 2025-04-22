@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   FaChartBar,
@@ -16,7 +16,43 @@ const Statistics = () => {
   const { withdrawals } = useWithdrawal();
   const [period, setPeriod] = useState<"week" | "month" | "year">("month");
 
-  // Calcular estadísticas por categoría
+  // Función para filtrar datos según el período seleccionado
+  const filterDataByPeriod = (date: string) => {
+    const currentDate = new Date();
+    const itemDate = new Date(date);
+
+    switch (period) {
+      case "week":
+        // Filtrar por la última semana
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        return itemDate >= oneWeekAgo;
+      case "month":
+        // Filtrar por el último mes
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        return itemDate >= oneMonthAgo;
+      case "year":
+        // Filtrar por el último año
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+        return itemDate >= oneYearAgo;
+      default:
+        return true;
+    }
+  };
+
+  // Filtrar retiros según el período
+  const filteredWithdrawals = useMemo(() => {
+    return withdrawals.filter((withdrawal) =>
+      filterDataByPeriod(withdrawal.createdAt)
+    );
+  }, [withdrawals, period]);
+
+  // Para estadísticas de retiros y productos retirados, usamos los datos filtrados por período
+  // Para estadísticas generales de productos y categorías, usamos todos los productos
+
+  // Calcular estadísticas por categoría con TODOS los productos (sin filtrar por fecha)
   const categoryStats = products.reduce((acc, product) => {
     acc[product.category] = (acc[product.category] || 0) + 1;
     return acc;
@@ -35,16 +71,16 @@ const Statistics = () => {
     (product) => product.stock <= product.minStock
   );
 
-  // Calcular estadísticas de retiros
-  const totalWithdrawals = withdrawals.length;
-  const totalItemsWithdrawn = withdrawals.reduce(
+  // Calcular estadísticas de retiros filtrados por período
+  const totalWithdrawals = filteredWithdrawals.length;
+  const totalItemsWithdrawn = filteredWithdrawals.reduce(
     (sum, withdrawal) => sum + withdrawal.totalItems,
     0
   );
 
-  // Productos más retirados
+  // Productos más retirados (filtrados por período)
   const productWithdrawalStats: Record<number, number> = {};
-  withdrawals.forEach((withdrawal) => {
+  filteredWithdrawals.forEach((withdrawal) => {
     withdrawal.items.forEach((item) => {
       productWithdrawalStats[item.productId] =
         (productWithdrawalStats[item.productId] || 0) + item.quantity;
@@ -67,14 +103,14 @@ const Statistics = () => {
       };
     });
 
-  // Estadísticas por sección
-  const sectionStats = withdrawals.reduce((acc, withdrawal) => {
-    acc[withdrawal.userSection] =
-      (acc[withdrawal.userSection] || 0) + withdrawal.totalItems;
+  // Estadísticas por sección (filtradas por período)
+  const sectionStats = filteredWithdrawals.reduce((acc, withdrawal) => {
+    acc[withdrawal.withdrawerSection] =
+      (acc[withdrawal.withdrawerSection] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  // Obtener secciones ordenadas por cantidad de items retirados
+  // Obtener secciones ordenadas por cantidad de retiros
   const sortedSections = Object.entries(sectionStats).sort(
     (a, b) => b[1] - a[1]
   );
@@ -89,6 +125,20 @@ const Statistics = () => {
         delay: i * 0.1,
       },
     }),
+  };
+
+  // Función para obtener el texto del período seleccionado
+  const getPeriodText = () => {
+    switch (period) {
+      case "week":
+        return "última semana";
+      case "month":
+        return "último mes";
+      case "year":
+        return "último año";
+      default:
+        return "período seleccionado";
+    }
   };
 
   return (
@@ -127,6 +177,14 @@ const Statistics = () => {
             Anual
           </button>
         </div>
+      </div>
+
+      <div className="bg-blue-50 p-4 rounded-md mb-4">
+        <p className="text-sm text-blue-800">
+          Mostrando estadísticas de retiros de la{" "}
+          <strong>{getPeriodText()}</strong>. La distribución por categoría
+          muestra el estado actual del inventario.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -212,28 +270,34 @@ const Statistics = () => {
             </h2>
           </div>
           <div className="p-6">
-            <div className="space-y-4">
-              {sortedCategories.map(([category, count], index) => (
-                <div key={category}>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-medium text-gray-900">
-                      {category}
-                    </span>
-                    <span className="text-gray-500">{count} productos</span>
+            {sortedCategories.length > 0 ? (
+              <div className="space-y-4">
+                {sortedCategories.map(([category, count], index) => (
+                  <div key={category}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-gray-900">
+                        {category}
+                      </span>
+                      <span className="text-gray-500">{count} productos</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <motion.div
+                        className="bg-blue-600 h-2.5 rounded-full"
+                        style={{ width: `${(count / totalProducts) * 100}%` }}
+                        initial="initial"
+                        animate="animate"
+                        custom={index}
+                        variants={barAnimations}
+                      />
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <motion.div
-                      className="bg-blue-600 h-2.5 rounded-full"
-                      style={{ width: `${(count / totalProducts) * 100}%` }}
-                      initial="initial"
-                      animate="animate"
-                      custom={index}
-                      variants={barAnimations}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center py-4 text-gray-500">
+                No hay datos para el período seleccionado
+              </p>
+            )}
           </div>
         </motion.div>
 
@@ -249,34 +313,40 @@ const Statistics = () => {
             </h2>
           </div>
           <div className="p-6">
-            <div className="space-y-4">
-              {topWithdrawnProducts.map(({ id, name, quantity }, index) => (
-                <div key={id}>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-medium text-gray-900">{name}</span>
-                    <span className="text-gray-500">{quantity} unidades</span>
+            {topWithdrawnProducts.length > 0 ? (
+              <div className="space-y-4">
+                {topWithdrawnProducts.map(({ id, name, quantity }, index) => (
+                  <div key={id}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-gray-900">{name}</span>
+                      <span className="text-gray-500">{quantity} unidades</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <motion.div
+                        className="bg-green-600 h-2.5 rounded-full"
+                        style={{
+                          width: `${
+                            (quantity /
+                              Math.max(
+                                ...topWithdrawnProducts.map((p) => p.quantity)
+                              )) *
+                            100
+                          }%`,
+                        }}
+                        initial="initial"
+                        animate="animate"
+                        custom={index}
+                        variants={barAnimations}
+                      />
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <motion.div
-                      className="bg-green-600 h-2.5 rounded-full"
-                      style={{
-                        width: `${
-                          (quantity /
-                            Math.max(
-                              ...topWithdrawnProducts.map((p) => p.quantity)
-                            )) *
-                          100
-                        }%`,
-                      }}
-                      initial="initial"
-                      animate="animate"
-                      custom={index}
-                      variants={barAnimations}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center py-4 text-gray-500">
+                No hay retiros para el período seleccionado
+              </p>
+            )}
           </div>
         </motion.div>
       </div>
@@ -293,43 +363,56 @@ const Statistics = () => {
           </h2>
         </div>
         <div className="p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              {sortedSections.map(([section, count], index) => (
-                <div key={section}>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-medium text-gray-900">{section}</span>
-                    <span className="text-gray-500">{count} items</span>
+          {sortedSections.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                {sortedSections.map(([section, count], index) => (
+                  <div key={section}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-gray-900">
+                        {section}
+                      </span>
+                      <span className="text-gray-500">
+                        {count} {count === 1 ? "retiro" : "retiros"}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <motion.div
+                        className="bg-purple-600 h-2.5 rounded-full"
+                        style={{
+                          width: `${
+                            (count /
+                              Math.max(...sortedSections.map((s) => s[1]))) *
+                            100
+                          }%`,
+                        }}
+                        initial="initial"
+                        animate="animate"
+                        custom={index}
+                        variants={barAnimations}
+                      />
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <motion.div
-                      className="bg-purple-600 h-2.5 rounded-full"
-                      style={{
-                        width: `${
-                          (count /
-                            Math.max(...sortedSections.map((s) => s[1]))) *
-                          100
-                        }%`,
-                      }}
-                      initial="initial"
-                      animate="animate"
-                      custom={index}
-                      variants={barAnimations}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-gray-800 mb-2">
-                  {sortedSections.length}
+              <div className="flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-gray-800 mb-2">
+                    {sortedSections.length}
+                  </div>
+                  <p className="text-sm text-gray-500">Secciones Activas</p>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Total de retiros: {filteredWithdrawals.length}
+                  </p>
                 </div>
-                <p className="text-sm text-gray-500">Secciones Activas</p>
               </div>
             </div>
-          </div>
+          ) : (
+            <p className="text-center py-4 text-gray-500">
+              No hay retiros para el período seleccionado
+            </p>
+          )}
         </div>
       </motion.div>
     </div>

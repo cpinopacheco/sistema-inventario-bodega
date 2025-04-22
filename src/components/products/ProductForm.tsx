@@ -21,9 +21,7 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
     category: "",
     stock: 0,
     minStock: 0,
-    location: "",
     price: 0,
-    image: "",
   });
   const [errors, setErrors] = useState({
     name: "",
@@ -41,9 +39,7 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
         category: product.category,
         stock: product.stock,
         minStock: product.minStock,
-        location: product.location,
         price: product.price,
-        image: product.image || "",
       });
     } else {
       // Set default category if available
@@ -307,65 +303,29 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label
-                  htmlFor="location"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Ubicación
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="price"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Precio <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleChange}
-                  min="0"
-                  step="0.01"
-                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
-                    errors.price ? "border-red-500" : ""
-                  }`}
-                  required
-                />
-                {errors.price && (
-                  <p className="mt-1 text-sm text-red-500">{errors.price}</p>
-                )}
-              </div>
-            </div>
-
             <div>
               <label
-                htmlFor="image"
+                htmlFor="price"
                 className="block text-sm font-medium text-gray-700"
               >
-                URL de la imagen
+                Precio <span className="text-red-500">*</span>
               </label>
               <input
-                type="text"
-                id="image"
-                name="image"
-                value={formData.image}
+                type="number"
+                id="price"
+                name="price"
+                value={formData.price}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                min="0"
+                step="0.01"
+                className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                  errors.price ? "border-red-500" : ""
+                }`}
+                required
               />
+              {errors.price && (
+                <p className="mt-1 text-sm text-red-500">{errors.price}</p>
+              )}
             </div>
           </div>
 

@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import { Toaster } from "react-hot-toast"
-import { MotionConfig } from "framer-motion"
-import { AuthProvider } from "./context/AuthContext"
-import { ProductProvider } from "./context/ProductContext"
-import { WithdrawalProvider } from "./context/WithdrawalContext"
-import ProtectedRoute from "./components/auth/ProtectedRoute"
-import Layout from "./components/layout/Layout"
-import Login from "./pages/Login"
-import Dashboard from "./pages/Dashboard"
-import Products from "./pages/Products"
-import Withdrawals from "./pages/Withdrawals"
-import Reports from "./pages/Reports"
-import LowStock from "./pages/LowStock"
-import Statistics from "./pages/Statistics"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { MotionConfig } from "framer-motion";
+import { AuthProvider } from "./context/AuthContext";
+import { ProductProvider } from "./context/ProductContext";
+import { WithdrawalProvider } from "./context/WithdrawalContext";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import Layout from "./components/layout/Layout";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Products from "./pages/Products";
+import Withdrawals from "./pages/Withdrawals";
+import Reports from "./pages/Reports";
+import LowStock from "./pages/LowStock";
+import Statistics from "./pages/Statistics";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
           <ProductProvider>
             <WithdrawalProvider>
               <Toaster
-                position="top-right"
+                position="top-center"
                 toastOptions={{
                   duration: 3000,
                   style: {
@@ -57,7 +57,7 @@ function App() {
         </AuthProvider>
       </BrowserRouter>
     </MotionConfig>
-  )
+  );
 }
 
-export default App
+export default App;
