@@ -53,58 +53,82 @@ const WithdrawalContext = createContext<WithdrawalContextType | undefined>(
 export const WithdrawalProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<WithdrawalItem[]>([]);
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
-  const { updateStock, getProduct } = useProducts();
+  const { updateStock, getProduct, setProducts } = useProducts();
   const { user } = useAuth();
 
-  // Añadir producto al carrito
-  const addToCart = useCallback((product: Product, quantity: number) => {
-    if (quantity <= 0) {
-      toast.error("La cantidad debe ser mayor a 0");
-      return;
-    }
-
-    if (quantity > product.stock) {
-      toast.error(`Solo hay ${product.stock} unidades disponibles`);
-      return;
-    }
-
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (item) => item.productId === product.id
+  // Versión silenciosa de updateStock que no muestra notificaciones
+  const updateStockSilently = useCallback(
+    (id: number, quantity: number) => {
+      setProducts((prev: Product[]) =>
+        prev.map((product: Product) =>
+          product.id === id
+            ? {
+                ...product,
+                stock: product.stock + quantity,
+                updatedAt: new Date().toISOString(),
+              }
+            : product
+        )
       );
+    },
+    [setProducts]
+  );
 
-      if (existingItem) {
-        // Si el producto ya está en el carrito, actualizar la cantidad
-        const newQuantity = existingItem.quantity + quantity;
-
-        if (newQuantity > product.stock) {
-          toast.error(
-            `No puede exceder el stock disponible (${product.stock})`
-          );
-          return prevCart;
-        }
-
-        return prevCart.map((item) =>
-          item.productId === product.id
-            ? { ...item, quantity: newQuantity }
-            : item
-        );
-      } else {
-        // Si no está en el carrito, añadirlo
-        return [...prevCart, { productId: product.id, quantity, product }];
+  // Añadir producto al carrito
+  const addToCart = useCallback(
+    (product: Product, quantity: number) => {
+      if (quantity <= 0) {
+        toast.error("La cantidad debe ser mayor a 0");
+        return;
       }
-    });
 
-    toast.success(`${product.name} añadido al carrito`);
-  }, []);
+      if (quantity > product.stock) {
+        toast.error(`Solo hay ${product.stock} unidades disponibles`);
+        return;
+      }
+
+      setCart((prevCart) => {
+        const existingItem = prevCart.find(
+          (item) => item.productId === product.id
+        );
+
+        if (existingItem) {
+          // Si el producto ya está en el carrito, actualizar la cantidad
+          const newQuantity = existingItem.quantity + quantity;
+
+          if (newQuantity > product.stock) {
+            toast.error(
+              `No puede exceder el stock disponible (${product.stock})`
+            );
+            return prevCart;
+          }
+
+          return prevCart.map((item) =>
+            item.productId === product.id
+              ? { ...item, quantity: newQuantity }
+              : item
+          );
+        } else {
+          // Si no está en el carrito, añadirlo
+          return [...prevCart, { productId: product.id, quantity, product }];
+        }
+      });
+
+      toast.success(`${product.name} añadido al carrito`);
+    },
+    [setCart]
+  );
 
   // Eliminar producto del carrito
-  const removeFromCart = useCallback((productId: number) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.productId !== productId)
-    );
-    toast.success("Producto eliminado del carrito");
-  }, []);
+  const removeFromCart = useCallback(
+    (productId: number) => {
+      setCart((prevCart) =>
+        prevCart.filter((item) => item.productId !== productId)
+      );
+      toast.success("Producto eliminado del carrito");
+    },
+    [setCart]
+  );
 
   // Actualizar cantidad de un producto en el carrito
   const updateCartItemQuantity = useCallback(
@@ -132,13 +156,13 @@ export const WithdrawalProvider = ({ children }: { children: ReactNode }) => {
         )
       );
     },
-    [getProduct, removeFromCart]
+    [getProduct, removeFromCart, setCart]
   );
 
   // Limpiar el carrito
   const clearCart = useCallback(() => {
     setCart([]);
-  }, []);
+  }, [setCart]);
 
   // Confirmar retiro de productos
   const confirmWithdrawal = useCallback(
@@ -192,9 +216,9 @@ export const WithdrawalProvider = ({ children }: { children: ReactNode }) => {
         createdAt: new Date().toISOString(),
       };
 
-      // Actualizar el stock de cada producto
+      // Actualizar el stock de cada producto silenciosamente (sin notificaciones)
       cart.forEach((item) => {
-        updateStock(item.productId, -item.quantity);
+        updateStockSilently(item.productId, -item.quantity);
       });
 
       // Guardar el retiro
@@ -205,7 +229,7 @@ export const WithdrawalProvider = ({ children }: { children: ReactNode }) => {
 
       toast.success("Retiro confirmado correctamente");
     },
-    [cart, user, withdrawals, getProduct, updateStock, clearCart]
+    [cart, user, withdrawals, getProduct, updateStockSilently, clearCart]
   );
 
   // Calcular el total de items en el carrito

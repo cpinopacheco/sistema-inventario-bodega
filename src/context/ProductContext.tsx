@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import {
   createContext,
   useState,
@@ -32,6 +34,7 @@ interface ProductContextType {
   products: Product[];
   categories: Category[];
   loading: boolean;
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   addProduct: (
     product: Omit<Product, "id" | "createdAt" | "updatedAt">
   ) => void;
@@ -245,6 +248,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
         products,
         categories,
         loading,
+        setProducts,
         addProduct,
         updateProduct,
         deleteProduct,

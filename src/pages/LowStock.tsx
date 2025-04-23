@@ -93,25 +93,27 @@ const LowStock = () => {
       </div>
 
       <div className="bg-neutral-white rounded-lg shadow-md p-4">
-        <div className="mb-4 p-4 bg-state-error bg-opacity-10 border-l-4 border-state-error rounded-r-md">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <FaExclamationTriangle className="h-5 w-5 text-state-error" />
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-state-error">
-                Alerta de Stock Bajo
-              </h3>
-              <div className="mt-2 text-sm text-state-error">
-                <p>
-                  Se han encontrado {filteredProducts.length} productos con
-                  stock por debajo del mínimo requerido. Estos productos
-                  necesitan reabastecimiento.
-                </p>
+        {filteredProducts.length > 0 && (
+          <div className="mb-4 p-4 bg-state-error bg-opacity-10 border-l-4 border-state-error rounded-r-md">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <FaExclamationTriangle className="h-5 w-5 text-state-error" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-state-error">
+                  Alerta de Stock Bajo
+                </h3>
+                <div className="mt-2 text-sm text-state-error">
+                  <p>
+                    Se han encontrado {filteredProducts.length} productos con
+                    stock por debajo del mínimo requerido. Estos productos
+                    necesitan reabastecimiento.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {filteredProducts.length > 0 ? (
           <div className="overflow-x-auto">

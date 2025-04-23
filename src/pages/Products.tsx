@@ -352,14 +352,14 @@ const Products = () => {
                               onClick={() => handleManageStock(product)}
                               className="text-state-success hover:bg-state-success hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8 group"
                             >
-                              <div className="flex items-center space-x-0">
+                              <div className="flex items-center">
                                 <FaArrowUp
                                   size={13}
                                   className="text-state-success group-hover:text-neutral-white"
                                 />
                                 <FaArrowDown
                                   size={13}
-                                  className="text-state-error group-hover:text-neutral-white -ml-0.5"
+                                  className="text-state-error group-hover:text-neutral-white ml-0"
                                 />
                               </div>
                             </button>
