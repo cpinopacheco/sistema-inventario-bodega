@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaBars, FaUser, FaBell, FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useAuth } from "../../context/AuthContext";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
@@ -57,13 +57,6 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
               </motion.span>
             )}
           </Link>
-
-          <button
-            className="p-2 text-primary hover:text-primary-light"
-            aria-label="Notificaciones"
-          >
-            <FaBell size={20} />
-          </button>
 
           <div className="relative" ref={userMenuRef}>
             <button
