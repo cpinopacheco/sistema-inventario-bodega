@@ -2,20 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  FaExclamationTriangle,
-  FaPlus,
-  FaSearch,
-  FaFileExcel,
-} from "react-icons/fa";
+import { FaExclamationTriangle, FaSearch, FaFileExcel } from "react-icons/fa";
 import { useProducts } from "../context/ProductContext";
-import { useWithdrawal } from "../context/WithdrawalContext";
-import { Tooltip } from "../components/ui/Tooltip";
 import { ExportToExcel } from "../utils/ExcelExport";
 
 const LowStock = () => {
   const { products, getLowStockProducts } = useProducts();
-  const { addToCart } = useWithdrawal();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -141,9 +133,6 @@ const LowStock = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
                     Déficit
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-primary uppercase tracking-wider">
-                    Acciones
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-neutral-white divide-y divide-neutral-light">
@@ -179,17 +168,6 @@ const LowStock = () => {
                       <div className="text-sm font-medium text-state-error">
                         {product.minStock - product.stock}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Tooltip content="Añadir al retiro">
-                        <button
-                          onClick={() => addToCart(product, 1)}
-                          className="text-primary-lighter hover:bg-primary-lighter hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
-                          disabled={product.stock <= 0}
-                        >
-                          <FaPlus size={16} />
-                        </button>
-                      </Tooltip>
                     </td>
                   </tr>
                 ))}

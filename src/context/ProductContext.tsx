@@ -147,6 +147,11 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
           : product
       )
     );
+    toast.success(
+      `Stock actualizado correctamente (${
+        quantity > 0 ? "+" : ""
+      }${quantity} unidades)`
+    );
   }, []);
 
   // NUEVAS FUNCIONES PARA GESTIONAR CATEGORÍAS

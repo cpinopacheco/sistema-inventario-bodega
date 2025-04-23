@@ -12,12 +12,15 @@ import {
   FaSortAmountDown,
   FaSortAmountUp,
   FaTags,
+  FaShoppingCart,
+  FaWarehouse,
 } from "react-icons/fa";
 import { useProducts, type Product } from "../context/ProductContext";
 import { useWithdrawal } from "../context/WithdrawalContext";
 import ProductForm from "../components/products/ProductForm";
 import CategoriesList from "../components/categories/CategoriesList";
 import { Tooltip } from "../components/ui/Tooltip";
+import StockManagementForm from "../components/products/StockManagementForm";
 
 const Products = () => {
   const { products, categories, deleteProduct } = useProducts();
@@ -36,6 +39,7 @@ const Products = () => {
     {}
   );
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
+  const [showStockManagementForm, setShowStockManagementForm] = useState(false);
 
   // Inicializar cantidades
   useEffect(() => {
@@ -85,6 +89,12 @@ const Products = () => {
       setSortField(field);
       setSortDirection("asc");
     }
+  };
+
+  // Función para abrir modal de gestión de stock
+  const handleManageStock = (product: Product) => {
+    setSelectedProduct(product);
+    setShowStockManagementForm(true);
   };
 
   // Filtrar y ordenar productos
@@ -321,7 +331,7 @@ const Products = () => {
                         </div>
 
                         <div className="flex items-center space-x-4">
-                          <Tooltip content="Añadir al retiro" position="top">
+                          <Tooltip content="Añadir al carrito" position="top">
                             <button
                               onClick={() =>
                                 handleAddToCart(
@@ -332,11 +342,20 @@ const Products = () => {
                               className="text-primary-lighter hover:bg-primary-lighter hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
                               disabled={product.stock <= 0}
                             >
-                              <FaPlus size={16} />
+                              <FaShoppingCart size={16} />
                             </button>
                           </Tooltip>
 
-                          <Tooltip content="Editar" position="top">
+                          <Tooltip content="Gestionar stock" position="top">
+                            <button
+                              onClick={() => handleManageStock(product)}
+                              className="text-state-success hover:bg-state-success hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
+                            >
+                              <FaWarehouse size={16} />
+                            </button>
+                          </Tooltip>
+
+                          <Tooltip content="Editar producto" position="top">
                             <button
                               onClick={() => handleEdit(product)}
                               className="text-state-info hover:bg-state-info hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
@@ -345,7 +364,7 @@ const Products = () => {
                             </button>
                           </Tooltip>
 
-                          <Tooltip content="Eliminar" position="top">
+                          <Tooltip content="Eliminar producto" position="top">
                             <button
                               onClick={() => handleDeleteConfirm(product.id)}
                               className="text-state-error hover:bg-state-error hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
@@ -432,6 +451,19 @@ const Products = () => {
               </div>
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showStockManagementForm && selectedProduct && (
+          <StockManagementForm
+            product={selectedProduct}
+            onClose={() => {
+              setShowStockManagementForm(false);
+              setSelectedProduct(null);
+            }}
+            isVisible={showStockManagementForm}
+          />
         )}
       </AnimatePresence>
     </div>
