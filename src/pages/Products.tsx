@@ -183,7 +183,13 @@ const Products = () => {
       </div>
 
       {filteredProducts.length > 0 ? (
-        <div className="bg-neutral-white rounded-lg shadow-md overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="bg-neutral-white rounded-lg shadow-md overflow-hidden"
+        >
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-neutral-light">
               <thead className="bg-primary-lightest">
@@ -390,7 +396,7 @@ const Products = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </motion.div>
       ) : (
         <div className="bg-neutral-white rounded-lg shadow-md p-8 text-center">
           <FaBoxes className="mx-auto text-neutral-medium text-5xl mb-4" />
