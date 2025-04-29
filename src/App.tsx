@@ -15,6 +15,7 @@ import Withdrawals from "./pages/Withdrawals";
 import Reports from "./pages/Reports";
 import LowStock from "./pages/LowStock";
 import Statistics from "./pages/Statistics";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   return (
@@ -45,6 +46,14 @@ function App() {
               />
               <Routes>
                 <Route path="/login" element={<Login />} />
+                <Route
+                  path="/change-password"
+                  element={
+                    <ProtectedRoute>
+                      <ChangePassword />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route
                   path="/"
                   element={

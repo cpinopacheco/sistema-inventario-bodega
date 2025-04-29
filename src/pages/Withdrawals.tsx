@@ -121,15 +121,20 @@ const Withdrawals = () => {
                 <div className="space-y-6">
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-neutral-light">
+                      <colgroup>
+                        <col className="w-[75%]" />
+                        <col className="w-[15%]" />
+                        <col className="w-[10%]" />
+                      </colgroup>
                       <thead className="bg-primary-lightest">
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
                             Producto
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
+                          <th className="px-2 py-3 text-center text-xs font-medium text-primary uppercase tracking-wider">
                             Cantidad
                           </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-primary uppercase tracking-wider">
+                          <th className="px-2 py-3 text-center text-xs font-medium text-primary uppercase tracking-wider">
                             Acciones
                           </th>
                         </tr>
@@ -152,59 +157,64 @@ const Withdrawals = () => {
                                 </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center justify-center">
-                                <button
-                                  onClick={() =>
-                                    handleQuantityChange(
-                                      item.productId,
-                                      Math.max(1, item.quantity - 1)
-                                    )
-                                  }
-                                  className="w-8 h-8 flex items-center justify-center bg-neutral-light rounded-l-md hover:bg-primary hover:text-neutral-white transition-colors"
-                                  aria-label="Disminuir cantidad"
-                                >
-                                  -
-                                </button>
-                                <input
-                                  type="number"
-                                  min="1"
-                                  value={item.quantity}
-                                  onChange={(e) =>
-                                    handleQuantityChange(
-                                      item.productId,
-                                      Number.parseInt(e.target.value) || 1
-                                    )
-                                  }
-                                  className="w-16 h-8 text-center border-t border-b border-neutral-light [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-primary focus:ring-primary"
-                                  style={{ textAlign: "center" }}
-                                />
-                                <button
-                                  onClick={() =>
-                                    handleQuantityChange(
-                                      item.productId,
-                                      item.quantity + 1
-                                    )
-                                  }
-                                  className="w-8 h-8 flex items-center justify-center bg-neutral-light rounded-r-md hover:bg-primary hover:text-neutral-white transition-colors"
-                                  aria-label="Aumentar cantidad"
-                                >
-                                  +
-                                </button>
+                            <td className="px-2 py-4 whitespace-nowrap">
+                              <div className="flex justify-center">
+                                <div className="inline-flex items-center">
+                                  <button
+                                    onClick={() =>
+                                      handleQuantityChange(
+                                        item.productId,
+                                        Math.max(1, item.quantity - 1)
+                                      )
+                                    }
+                                    className="w-7 h-7 flex items-center justify-center bg-neutral-light rounded-l-md hover:bg-primary hover:text-neutral-white transition-colors"
+                                    aria-label="Disminuir cantidad"
+                                  >
+                                    -
+                                  </button>
+                                  <input
+                                    type="number"
+                                    min="1"
+                                    value={item.quantity}
+                                    onChange={(e) =>
+                                      handleQuantityChange(
+                                        item.productId,
+                                        Number.parseInt(e.target.value) || 1
+                                      )
+                                    }
+                                    className="w-10 h-7 text-center border-t border-b border-neutral-light [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-primary focus:ring-primary"
+                                  />
+                                  <button
+                                    onClick={() =>
+                                      handleQuantityChange(
+                                        item.productId,
+                                        item.quantity + 1
+                                      )
+                                    }
+                                    className="w-7 h-7 flex items-center justify-center bg-neutral-light rounded-r-md hover:bg-primary hover:text-neutral-white transition-colors"
+                                    aria-label="Aumentar cantidad"
+                                  >
+                                    +
+                                  </button>
+                                </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <Tooltip
-                                content="Eliminar del carrito"
-                                position="top"
-                              >
-                                <button
-                                  onClick={() => removeFromCart(item.productId)}
-                                  className="text-state-error hover:bg-state-error hover:text-neutral-white p-2 rounded-full transition-colors flex items-center justify-center w-8 h-8"
+                            <td className="px-2 py-4 whitespace-nowrap">
+                              <div className="flex justify-center">
+                                <Tooltip
+                                  content="Eliminar del carrito"
+                                  position="top"
                                 >
-                                  <FaTrash size={16} />
-                                </button>
-                              </Tooltip>
+                                  <button
+                                    onClick={() =>
+                                      removeFromCart(item.productId)
+                                    }
+                                    className="text-state-error hover:bg-state-error hover:text-neutral-white p-1.5 rounded-full transition-colors flex items-center justify-center w-7 h-7"
+                                  >
+                                    <FaTrash size={14} />
+                                  </button>
+                                </Tooltip>
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -406,15 +416,20 @@ const Withdrawals = () => {
                             </h4>
                             <div className="bg-primary-lightest rounded-md overflow-x-auto">
                               <table className="min-w-full divide-y divide-neutral-light">
+                                <colgroup>
+                                  <col className="w-[75%]" />
+                                  <col className="w-[15%]" />
+                                  <col className="w-[10%]" />
+                                </colgroup>
                                 <thead className="bg-primary-lightest">
                                   <tr>
                                     <th className="px-6 py-2 text-left text-xs font-medium text-primary uppercase tracking-wider">
                                       Producto
                                     </th>
-                                    <th className="px-6 py-2 text-left text-xs font-medium text-primary uppercase tracking-wider">
+                                    <th className="px-2 py-2 text-center text-xs font-medium text-primary uppercase tracking-wider">
                                       Categoría
                                     </th>
-                                    <th className="px-6 py-2 text-right text-xs font-medium text-primary uppercase tracking-wider">
+                                    <th className="px-2 py-2 text-center text-xs font-medium text-primary uppercase tracking-wider">
                                       Cantidad
                                     </th>
                                   </tr>
@@ -428,10 +443,10 @@ const Withdrawals = () => {
                                       <td className="px-6 py-2 whitespace-nowrap text-sm text-neutral-dark">
                                         {item.product.name}
                                       </td>
-                                      <td className="px-6 py-2 whitespace-nowrap text-sm text-neutral-medium">
+                                      <td className="px-2 py-2 whitespace-nowrap text-sm text-neutral-medium text-center">
                                         {item.product.category}
                                       </td>
-                                      <td className="px-6 py-2 whitespace-nowrap text-sm text-neutral-dark text-right">
+                                      <td className="px-2 py-2 whitespace-nowrap text-sm text-neutral-dark text-center">
                                         {item.quantity}
                                       </td>
                                     </tr>

@@ -37,7 +37,7 @@ const CategoriesList = ({ onClose }: CategoriesListProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="modal-overlay">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -167,12 +167,7 @@ const CategoriesList = ({ onClose }: CategoriesListProps) => {
 
       <AnimatePresence>
         {confirmDelete !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 p-4"
-          >
+          <div className="modal-overlay">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -201,7 +196,7 @@ const CategoriesList = ({ onClose }: CategoriesListProps) => {
                 </button>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

@@ -76,11 +76,8 @@ const CategoryForm = ({ category, onClose, isVisible }: CategoryFormProps) => {
   if (!isVisible) return null;
 
   return (
-    <motion.div
-      className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 p-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
+      className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 m-0 p-0"
       onClick={(e) => {
         // Cerrar al hacer clic en el overlay
         if (e.target === e.currentTarget) {
@@ -166,7 +163,7 @@ const CategoryForm = ({ category, onClose, isVisible }: CategoryFormProps) => {
           </div>
         </form>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 

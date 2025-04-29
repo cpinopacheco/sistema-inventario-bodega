@@ -78,3 +78,22 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400;
 }
+
+/* Estilo de focus verde para todos los inputs - con !important para asegurar que se aplique */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(1, 58, 26, 0.3) !important;
+  border-color: #013a1a !important;
+}
+
+/* Eliminar el outline azul predeterminado de Chrome */
+*:focus {
+  outline: none !important;
+}
+
+/* Eliminar el outline azul en Firefox */
+*::-moz-focus-inner {
+  border: 0 !important;
+}

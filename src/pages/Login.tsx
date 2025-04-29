@@ -4,28 +4,41 @@ import type React from "react";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaIdCard } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
+  const [employeeCode, setEmployeeCode] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Validación del formato del código de funcionario (6 dígitos + 1 letra minúscula)
+  const validateEmployeeCode = (code: string) => {
+    const regex = /^\d{6}[a-z]$/;
+    return regex.test(code);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email.trim() || !password.trim()) {
-      setError("Por favor, ingrese su email y contraseña");
+    if (!employeeCode.trim() || !password.trim()) {
+      setError("Por favor, ingrese su código de funcionario y contraseña");
+      return;
+    }
+
+    if (!validateEmployeeCode(employeeCode)) {
+      setError(
+        "El código de funcionario debe tener 6 dígitos seguidos de una letra minúscula"
+      );
       return;
     }
 
     try {
       setLoading(true);
       setError("");
-      await login(email, password);
+      await login(employeeCode, password);
     } catch (error) {
       setError("Ocurrió un error al iniciar sesión");
       console.error(error);
@@ -33,6 +46,9 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  const inputClasses =
+    "w-full px-3 py-2 border border-neutral-light rounded-md focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-green-800";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-primary-lightest">
@@ -77,20 +93,33 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              htmlFor="email"
+              htmlFor="employeeCode"
               className="block text-sm font-medium text-neutral-dark mb-1"
             >
-              Email
+              Código de Funcionario
             </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-neutral-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="admin@example.com"
-              required
-            />
+            <div className="relative">
+              <input
+                id="employeeCode"
+                type="text"
+                value={employeeCode}
+                onChange={(e) => setEmployeeCode(e.target.value)}
+                className={inputClasses}
+                style={
+                  {
+                    "--tw-ring-color": "rgb(1, 58, 26, 0.5)",
+                  } as React.CSSProperties
+                }
+                placeholder="123456a"
+                required
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <FaIdCard className="text-neutral-medium" size={14} />
+              </div>
+            </div>
+            <p className="text-xs text-neutral-medium mt-1">
+              Formato: 6 dígitos + 1 letra minúscula (ej: 123456a)
+            </p>
           </div>
           <div className="mb-6">
             <label
@@ -105,7 +134,12 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-neutral-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className={inputClasses}
+                style={
+                  {
+                    "--tw-ring-color": "rgb(1, 58, 26, 0.5)",
+                  } as React.CSSProperties
+                }
                 placeholder="••••••••"
                 required
               />
@@ -126,7 +160,7 @@ const Login = () => {
         <div className="mt-6 text-center text-sm text-neutral-medium">
           <p>Para propósitos de demo:</p>
           <p>
-            Email: <strong>admin@example.com</strong>
+            Código: <strong>123456a</strong>
           </p>
           <p>
             Contraseña: <strong>password</strong>

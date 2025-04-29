@@ -149,11 +149,8 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
   if (!isVisible) return null;
 
   return (
-    <motion.div
-      className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 p-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
+      className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 m-0 p-0"
       onClick={(e) => {
         // Cerrar al hacer clic en el overlay
         if (e.target === e.currentTarget) {
@@ -169,13 +166,13 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
         exit="exit"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-4 border-b border-neutral-light">
-          <h2 className="text-xl font-semibold text-primary">
+        <div className="flex justify-between items-center p-4 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-green-800">
             {product ? "Editar Producto" : "Nuevo Producto"}
           </h2>
           <button
             onClick={onClose}
-            className="text-neutral-medium hover:text-neutral-dark focus:outline-none"
+            className="text-gray-500 hover:text-gray-700 focus:outline-none"
             aria-label="Cerrar"
           >
             <FaTimes size={20} />
@@ -187,9 +184,9 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-neutral-dark"
+                className="block text-sm font-medium text-gray-700"
               >
-                Nombre <span className="text-state-error">*</span>
+                Nombre <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -197,20 +194,20 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`mt-1 block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
-                  errors.name ? "border-state-error" : ""
+                className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm ${
+                  errors.name ? "border-red-500" : ""
                 }`}
                 required
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-state-error">{errors.name}</p>
+                <p className="mt-1 text-sm text-red-500">{errors.name}</p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-neutral-dark"
+                className="block text-sm font-medium text-gray-700"
               >
                 Descripción
               </label>
@@ -220,24 +217,24 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
                 value={formData.description}
                 onChange={handleChange}
                 rows={3}
-                className="mt-1 block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm"
               />
             </div>
 
             <div>
               <label
                 htmlFor="category"
-                className="block text-sm font-medium text-neutral-dark"
+                className="block text-sm font-medium text-gray-700"
               >
-                Categoría <span className="text-state-error">*</span>
+                Categoría <span className="text-red-500">*</span>
               </label>
               <select
                 id="category"
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className={`mt-1 block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
-                  errors.category ? "border-state-error" : ""
+                className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm ${
+                  errors.category ? "border-red-500" : ""
                 }`}
                 required
               >
@@ -249,9 +246,7 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
                 ))}
               </select>
               {errors.category && (
-                <p className="mt-1 text-sm text-state-error">
-                  {errors.category}
-                </p>
+                <p className="mt-1 text-sm text-red-500">{errors.category}</p>
               )}
             </div>
 
@@ -259,9 +254,9 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
               <div>
                 <label
                   htmlFor="stock"
-                  className="block text-sm font-medium text-neutral-dark"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  Stock <span className="text-state-error">*</span>
+                  Stock <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -270,24 +265,22 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
                   value={formData.stock}
                   onChange={handleChange}
                   min="0"
-                  className={`mt-1 block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
-                    errors.stock ? "border-state-error" : ""
+                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm ${
+                    errors.stock ? "border-red-500" : ""
                   }`}
                   required
                 />
                 {errors.stock && (
-                  <p className="mt-1 text-sm text-state-error">
-                    {errors.stock}
-                  </p>
+                  <p className="mt-1 text-sm text-red-500">{errors.stock}</p>
                 )}
               </div>
 
               <div>
                 <label
                   htmlFor="minStock"
-                  className="block text-sm font-medium text-neutral-dark"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  Stock Mínimo <span className="text-state-error">*</span>
+                  Stock Mínimo <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -296,15 +289,13 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
                   value={formData.minStock}
                   onChange={handleChange}
                   min="0"
-                  className={`mt-1 block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
-                    errors.minStock ? "border-state-error" : ""
+                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm ${
+                    errors.minStock ? "border-red-500" : ""
                   }`}
                   required
                 />
                 {errors.minStock && (
-                  <p className="mt-1 text-sm text-state-error">
-                    {errors.minStock}
-                  </p>
+                  <p className="mt-1 text-sm text-red-500">{errors.minStock}</p>
                 )}
               </div>
             </div>
@@ -312,9 +303,9 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
             <div>
               <label
                 htmlFor="price"
-                className="block text-sm font-medium text-neutral-dark"
+                className="block text-sm font-medium text-gray-700"
               >
-                Precio <span className="text-state-error">*</span>
+                Precio <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -324,13 +315,13 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
                 onChange={handleChange}
                 min="0"
                 step="0.01"
-                className={`mt-1 block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
-                  errors.price ? "border-state-error" : ""
+                className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm ${
+                  errors.price ? "border-red-500" : ""
                 }`}
                 required
               />
               {errors.price && (
-                <p className="mt-1 text-sm text-state-error">{errors.price}</p>
+                <p className="mt-1 text-sm text-red-500">{errors.price}</p>
               )}
             </div>
           </div>
@@ -339,14 +330,14 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex items-center px-4 py-2 border border-neutral-light rounded-md shadow-sm text-sm font-medium text-neutral-dark bg-neutral-white hover:bg-neutral-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700"
             >
               <FaTimes className="mr-2 -ml-1 h-4 w-4" />
               Cancelar
             </button>
             <button
               type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-neutral-white bg-primary hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-800 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700"
             >
               {product ? (
                 <>
@@ -363,7 +354,7 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
           </div>
         </form>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 

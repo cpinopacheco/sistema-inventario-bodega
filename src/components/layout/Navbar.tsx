@@ -3,11 +3,12 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaBars, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaKey } from "react-icons/fa";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useAuth } from "../../context/AuthContext";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import { useWithdrawal } from "../../context/WithdrawalContext";
+import { FaBars } from "react-icons/fa";
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -91,6 +92,14 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
                       Sección: {user?.section}
                     </p>
                   </div>
+                  <Link
+                    to="/change-password"
+                    className="w-full px-4 py-2 text-sm text-left text-neutral-dark hover:bg-neutral-light flex items-center"
+                    onClick={() => setUserMenuOpen(false)}
+                  >
+                    <FaKey className="mr-2" />
+                    Cambiar Contraseña
+                  </Link>
                   <button
                     onClick={logout}
                     className="w-full px-4 py-2 text-sm text-left text-neutral-dark hover:bg-neutral-light flex items-center"
