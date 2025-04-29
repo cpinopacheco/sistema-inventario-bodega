@@ -1,17 +1,31 @@
 "use client";
 
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  // Return a simple loading state or null during server-side rendering
+  if (!isMounted) {
+    return (
+      <div className="h-screen bg-gray-100 flex items-center justify-center">
+        Cargando...
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">

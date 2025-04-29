@@ -15,9 +15,21 @@ import Withdrawals from "./pages/Withdrawals";
 import Reports from "./pages/Reports";
 import LowStock from "./pages/LowStock";
 import Statistics from "./pages/Statistics";
-import ChangePassword from "./pages/ChangePassword";
+import { useEffect, useState } from "react";
 
 function App() {
+  // Add client-side only rendering to prevent "document is not defined" error
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Return null during server-side rendering
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <MotionConfig reducedMotion="user">
       <HashRouter>
@@ -46,14 +58,6 @@ function App() {
               />
               <Routes>
                 <Route path="/login" element={<Login />} />
-                <Route
-                  path="/change-password"
-                  element={
-                    <ProtectedRoute>
-                      <ChangePassword />
-                    </ProtectedRoute>
-                  }
-                />
                 <Route
                   path="/"
                   element={
