@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar";
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const sidebarWidth = 256; // 64 * 4 = 256px (w-64)
 
   useEffect(() => {
     setIsMounted(true);
@@ -28,38 +29,48 @@ const Layout = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen overflow-hidden bg-gray-100">
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
-            initial={{ x: -300 }}
+            initial={{ x: -sidebarWidth }}
             animate={{ x: 0 }}
-            exit={{ x: -300 }}
+            exit={{ x: -sidebarWidth }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed left-0 z-10 h-full md:relative"
+            className="fixed top-0 left-0 z-10 h-screen"
+            style={{ width: sidebarWidth }}
           >
             <Sidebar />
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="flex flex-col flex-1 w-full overflow-hidden">
+      <motion.div
+        className="flex flex-col flex-1 min-h-screen"
+        animate={{
+          marginLeft: sidebarOpen ? sidebarWidth : 0,
+          width: `calc(100% - ${sidebarOpen ? sidebarWidth : 0}px)`,
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
         <Navbar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
-        <main className="flex-1 overflow-auto p-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={window.location.pathname}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="container mx-auto py-4"
-            >
-              <Outlet />
-            </motion.div>
-          </AnimatePresence>
+        <main className="flex-1 overflow-auto">
+          <div className="container mx-auto p-4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={window.location.pathname}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="py-4"
+              >
+                <Outlet />
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </main>
-      </div>
+      </motion.div>
     </div>
   );
 };

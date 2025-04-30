@@ -8,7 +8,6 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useAuth } from "../../context/AuthContext";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import { useWithdrawal } from "../../context/WithdrawalContext";
-import { FaBars } from "react-icons/fa";
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -27,15 +26,39 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
     <header className="bg-neutral-white border-b border-neutral-light shadow-sm">
       <div className="px-4 py-3 flex justify-between items-center">
         <div className="flex items-center">
-          <button
+          <motion.button
             onClick={toggleSidebar}
-            className="mr-4 text-primary hover:text-primary-light focus:outline-none"
+            className="mr-4 text-primary hover:text-primary-light focus:outline-none w-8 h-8 flex items-center justify-center relative"
             aria-label={
               sidebarOpen ? "Cerrar menú lateral" : "Abrir menú lateral"
             }
+            whileTap={{ scale: 0.9 }}
           >
-            <FaBars size={24} />
-          </button>
+            <motion.div
+              className="absolute w-6 h-0.5 bg-current rounded-full"
+              animate={{
+                rotate: sidebarOpen ? 45 : 0,
+                y: sidebarOpen ? 0 : -6, // Cambiar de -4 a -6 para mayor separación
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.div
+              className="absolute w-6 h-0.5 bg-current rounded-full"
+              animate={{
+                opacity: sidebarOpen ? 0 : 1,
+                x: sidebarOpen ? -20 : 0,
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.div
+              className="absolute w-6 h-0.5 bg-current rounded-full"
+              animate={{
+                rotate: sidebarOpen ? -45 : 0,
+                y: sidebarOpen ? 0 : 6, // Cambiar de 4 a 6 para mayor separación
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          </motion.button>
           <Link to="/dashboard" className="text-xl font-semibold text-primary">
             Sistema de Inventario
           </Link>
@@ -58,6 +81,10 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
               </motion.span>
             )}
           </Link>
+
+          {/* <button className="p-2 text-primary hover:text-primary-light" aria-label="Notificaciones">
+            <FaBell size={20} />
+          </button> */}
 
           <div className="relative" ref={userMenuRef}>
             <button
@@ -94,11 +121,9 @@ const Navbar = ({ toggleSidebar, sidebarOpen }: NavbarProps) => {
                   </div>
                   <Link
                     to="/change-password"
-                    className="w-full px-4 py-2 text-sm text-left text-neutral-dark hover:bg-neutral-light flex items-center"
-                    onClick={() => setUserMenuOpen(false)}
+                    className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700"
                   >
-                    <FaKey className="mr-2" />
-                    Cambiar Contraseña
+                    <FaKey className="mr-2" /> Cambiar Contraseña
                   </Link>
                   <button
                     onClick={logout}
