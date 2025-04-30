@@ -67,7 +67,7 @@ const ChangePassword = () => {
     "w-full p-2 border border-neutral-light rounded focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-green-800";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary-lightest p-4">
+    <div className="min-h-[85vh] flex items-center justify-center bg-primary-lightest p-4">
       <div className="bg-neutral-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-primary">

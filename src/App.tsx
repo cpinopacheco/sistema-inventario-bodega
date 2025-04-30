@@ -15,6 +15,7 @@ import Withdrawals from "./pages/Withdrawals";
 import Reports from "./pages/Reports";
 import LowStock from "./pages/LowStock";
 import Statistics from "./pages/Statistics";
+import ChangePassword from "./pages/ChangePassword";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -73,6 +74,8 @@ function App() {
                   <Route path="reports" element={<Reports />} />
                   <Route path="low-stock" element={<LowStock />} />
                   <Route path="statistics" element={<Statistics />} />
+                  {/* Corregir la ruta para que sea "change-password" sin la barra inicial */}
+                  <Route path="change-password" element={<ChangePassword />} />
                 </Route>
               </Routes>
             </WithdrawalProvider>
