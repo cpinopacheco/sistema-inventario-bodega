@@ -59,7 +59,6 @@ const Reports = () => {
       Stock: product.stock,
       "Stock Mínimo": product.minStock,
       "Stock Bajo": product.stock <= product.minStock ? "Sí" : "No",
-      Precio: product.price,
       "Última Actualización": formatDate(product.updatedAt),
     }));
 

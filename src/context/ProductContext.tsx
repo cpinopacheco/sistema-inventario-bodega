@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import {
   createContext,
   useState,
@@ -20,7 +18,6 @@ export interface Product {
   category: string;
   stock: number;
   minStock: number;
-  price: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -34,7 +31,6 @@ interface ProductContextType {
   products: Product[];
   categories: Category[];
   loading: boolean;
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   addProduct: (
     product: Omit<Product, "id" | "createdAt" | "updatedAt">
   ) => void;
@@ -150,11 +146,6 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
           : product
       )
     );
-    toast.success(
-      `Stock actualizado correctamente (${
-        quantity > 0 ? "+" : ""
-      }${quantity} unidades)`
-    );
   }, []);
 
   // NUEVAS FUNCIONES PARA GESTIONAR CATEGORÍAS
@@ -248,7 +239,6 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
         products,
         categories,
         loading,
-        setProducts,
         addProduct,
         updateProduct,
         deleteProduct,

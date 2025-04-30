@@ -7,7 +7,7 @@ import { useProducts } from "../context/ProductContext";
 import { ExportToExcel } from "../utils/ExcelExport";
 
 const LowStock = () => {
-  const { products, getLowStockProducts } = useProducts();
+  const { getLowStockProducts } = useProducts();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -41,7 +41,6 @@ const LowStock = () => {
       "Stock Actual": product.stock,
       "Stock Mínimo": product.minStock,
       Déficit: product.minStock - product.stock,
-      Precio: product.price,
     }));
 
     ExportToExcel(data, "Productos_Stock_Bajo");

@@ -21,14 +21,12 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
     category: "",
     stock: 0,
     minStock: 0,
-    price: 0,
   });
   const [errors, setErrors] = useState({
     name: "",
     category: "",
     stock: "",
     minStock: "",
-    price: "",
   });
 
   useEffect(() => {
@@ -39,7 +37,6 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
         category: product.category,
         stock: product.stock,
         minStock: product.minStock,
-        price: product.price,
       });
     } else {
       // Set default category if available
@@ -59,7 +56,6 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
       category: "",
       stock: "",
       minStock: "",
-      price: "",
     };
 
     if (!formData.name.trim()) {
@@ -82,11 +78,6 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
       isValid = false;
     }
 
-    if (formData.price <= 0) {
-      newErrors.price = "El precio debe ser mayor a 0";
-      isValid = false;
-    }
-
     setErrors(newErrors);
     return isValid;
   };
@@ -101,7 +92,7 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "stock" || name === "minStock" || name === "price"
+        name === "stock" || name === "minStock"
           ? Number.parseFloat(value) || 0
           : value,
     }));
@@ -308,31 +299,6 @@ const ProductForm = ({ product, onClose, isVisible }: ProductFormProps) => {
                   </p>
                 )}
               </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="price"
-                className="block text-sm font-medium text-neutral-dark"
-              >
-                Precio <span className="text-state-error">*</span>
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                min="0"
-                step="0.01"
-                className={`mt-1 block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
-                  errors.price ? "border-state-error" : ""
-                }`}
-                required
-              />
-              {errors.price && (
-                <p className="mt-1 text-sm text-state-error">{errors.price}</p>
-              )}
             </div>
           </div>
 
